@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#050505] text-[#ededed] antialiased selection:bg-white selection:text-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalyth — AI Ecosystem for Business</title>
+    <meta name="description" content="Scalyth helps businesses understand what is holding them back — and what to do next.">
+    
+    <!-- Fonts: Inter for chat/body, Space Grotesk for big bold headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        obsidian: '#050505',
+                        muted: '#888888',
+                        surface: 'rgba(255, 255, 255, 0.03)',
+                        border: 'rgba(255, 255, 255, 0.08)'
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP & Confetti -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            overflow-x: hidden;
+            overscroll-behavior: none;
+        }
+
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.035;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            background: var(--surface, rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--border, rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .reveal-text, .reveal-element {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-bottom-color: #ffffff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .eco-node {
+            position: fixed;
+            opacity: 0;
+            color: #555;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 40;
+            transition: opacity 1.5s ease;
+        }
+        
+        .chat-msg {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .chat-msg.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Toast Popup CSS */
+        .toast-popup {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast-popup.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-[#ededed]">
+    
+    <div class="noise"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Spam Note Toast -->
+    <div id="spam-toast" class="toast-popup fixed top-8 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-[60] bg-[#111]/90 backdrop-blur-md border border-white/10 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
+        <span class="text-xl">🤞</span>
+        <p class="text-xs font-medium text-white/90">We won't spam you.<br><span class="text-muted font-light">We barely have time to check our own emails.</span></p>
+    </div>
+
+    <!-- Floating Labels -->
+    <div id="ecosystem-labels" class="fixed inset-0 pointer-events-none z-10 hidden">
+        <div class="eco-node" id="node-finance">FINANCE</div>
+        <div class="eco-node" id="node-ops">OPERATIONS</div>
+        <div class="eco-node" id="node-sales">SALES</div>
+        <div class="eco-node" id="node-marketing">MARKETING</div>
+        <div class="eco-node" id="node-growth">GROWTH</div>
+        <div class="eco-node" id="node-ai">AI Core</div>
+    </div>
+
+    <!-- MAIN SCROLL CONTEXT -->
+    <main id="main-content" class="relative z-10 flex flex-col items-center w-full transition-opacity duration-500">
+        <!-- Navigation -->
+        <nav class="w-full max-w-6xl mx-auto px-6 py-8 flex justify-between items-center fixed top-0 left-0 right-0 z-50 mix-blend-difference">
+            <div class="text-sm font-heading font-bold tracking-widest uppercase">Scalyth</div>
+            <div class="hidden md:flex gap-8 text-xs text-muted font-medium tracking-wide">
+                <a href="#problem" class="hover:text-white transition-colors duration-300">How it works</a>
+                <a href="#vision" class="hover:text-white transition-colors duration-300">Vision</a>
+            </div>
+            <button onclick="triggerWaitlistTransition()" class="text-xs tracking-wide uppercase border border-white/20 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all duration-300 font-bold">
+                Join the Waitlist
+            </button>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <section class="min-h-screen w-full flex flex-col items-center justify-center px-6 relative">
+            <div class="max-w-4xl w-full flex flex-col items-center text-center mt-12">
+                <p class="text-[0.65rem] tracking-[0.2em] text-muted uppercase mb-8 reveal-element hero-elem font-bold">
+                    AI Ecosystem for Business
+                </p>
+                
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-bold tracking-tighter leading-[1.05] mb-8 hero-elem uppercase">
+                    <span class="block reveal-text">BUSINESSES ARE COMPLICATED.</span>
+                    <span class="block text-muted reveal-text">RUNNING ONE SHOULDN'T BE.</span>
+                </h1>
+                
+                <p class="text-sm md:text-base text-muted max-w-md mx-auto mb-12 font-light leading-relaxed reveal-element hero-elem">
+                    Scalyth helps businesses understand what is holding them back — and what to do next.
+                </p>
+                
+                <button onclick="triggerWaitlistTransition()" class="group flex items-center gap-3 text-sm font-bold tracking-wide uppercase reveal-element hero-elem pb-1 border-b border-white/30 hover:border-white transition-colors">
+                    Get in early <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 1: THE PROBLEM -->
+        <section id="problem" class="min-h-screen w-full flex items-center justify-center px-6 py-24">
+            <div class="max-w-3xl text-center">
+                <p class="text-[0.65rem] tracking-[0.2em] text-muted uppercase mb-12 scroll-reveal font-bold">The Reality Check</p>
+                <h2 class="text-3xl md:text-5xl font-heading font-bold tracking-tight leading-none scroll-reveal uppercase">
+                    50 TABS OPEN.<br>
+                    10 DIFFERENT TOOLS.<br>
+                    STILL NO IDEA WHAT TO FIX FIRST.
+                </h2>
+            </div>
+        </section>
+        
+        <!-- SECTION 2: THE LOOP -->
+        <section class="min-h-screen w-full flex items-center justify-center px-6 py-24">
+            <div class="max-w-4xl w-full text-center">
+                <p class="text-[0.65rem] tracking-[0.2em] text-muted uppercase mb-16 scroll-reveal font-bold">The Scalyth Loop</p>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 text-sm md:text-xl tracking-widest font-heading font-bold text-muted scroll-reveal">
+                    <div class="hover:text-white transition-colors duration-500">CONNECT</div>
+                    <div class="hidden md:block opacity-30">→</div>
+                    <div class="hover:text-white transition-colors duration-500 delay-100">DIAGNOSE</div>
+                    <div class="hidden md:block opacity-30">→</div>
+                    <div class="hover:text-white transition-colors duration-500 delay-200">ACT</div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="w-full py-8 text-center text-xs text-muted/50 font-light border-t border-white/[0.02]">
+            © 2026 Scalyth. Building the intelligence layer.
+        </footer>
+    </main>
+
+    <!-- SPLIT-SCREEN WAITLIST OVERLAY -->
+    <div id="waitlist-overlay" class="fixed inset-0 z-40 flex opacity-0 pointer-events-none transition-opacity duration-1000 bg-obsidian backdrop-blur-xl">
+        
+        <button onclick="closeWaitlist()" class="absolute top-8 right-8 z-50 text-xs font-bold text-muted hover:text-white uppercase tracking-widest transition-colors">
+            Close ✕
+        </button>
+
+        <div class="flex flex-col md:flex-row w-full h-full relative" id="waitlist-content">
+            
+            <!-- LEFT SIDE: Bold Typography -->
+            <div class="w-full md:w-1/2 h-1/3 md:h-full flex flex-col justify-center p-8 md:p-16 lg:p-24 relative overflow-hidden border-b md:border-b-0 md:border-r border-white/10">
+                <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl opacity-70 animate-blob"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-gray-600/10 rounded-full mix-blend-overlay filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+                
+                <div class="relative z-10">
+                    <p class="text-[0.65rem] tracking-[0.2em] text-muted uppercase mb-4 font-bold">No Gatekeeping. Want In?</p>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-heading font-bold tracking-tighter leading-[1.0] mb-6 uppercase text-white drop-shadow-lg">
+                        BUSINESS<br>
+                        INTELLIGENCE,<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-500">WITHOUT<br>THE BS.</span>
+                    </h2>
+                    <p class="text-sm text-muted font-light max-w-sm">
+                        We're cooking up something insane in public. Drop your details on the right and we'll hit you up as soon as the doors open.
+                    </p>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: Conversational Chat UI -->
+            <div class="w-full md:w-1/2 h-2/3 md:h-full flex flex-col justify-center p-8 md:p-16 lg:p-24 bg-[#030303] relative overflow-y-auto">
+                
+                <div class="w-full max-w-md mx-auto space-y-8 pb-12" id="chat-flow">
+                    
+                    <div class="chat-msg active" id="step-1-q">
+                        <p class="text-xl font-heading font-bold text-white mb-2">Ayo. What should we call you?</p>
+                        <div class="relative">
+                            <input type="text" id="chat-name" class="chat-input w-full bg-transparent border-b border-white/20 text-lg py-2 text-white placeholder-muted transition-colors" placeholder="Type your name and hit Enter →" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="chat-msg hidden" id="step-2-q">
+                        <p class="text-xl font-heading font-bold text-white mb-2">Main character energy, <span id="display-name" class="text-gray-400"></span>. Where should we drop the invite?</p>
+                        <div class="relative">
+                            <input type="email" id="chat-email" class="chat-input w-full bg-transparent border-b border-white/20 text-lg py-2 text-white placeholder-muted transition-colors" placeholder="your@email.com →" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="chat-msg hidden" id="step-3-q">
+                        <p class="text-xl font-heading font-bold text-white mb-2">Bet. Last thing—what's your role? (Founder, dev, etc.)</p>
+                        <div class="relative flex flex-col items-start gap-4">
+                            <input type="text" id="chat-role" class="chat-input w-full bg-transparent border-b border-white/20 text-lg py-2 text-white placeholder-muted transition-colors" placeholder="Type role and hit Enter →" autocomplete="off">
+                            
+                            <button id="submit-btn" class="hidden mt-4 bg-white text-black font-heading font-bold uppercase tracking-widest text-xs px-6 py-3 rounded hover:bg-gray-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                                Get me in
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="chat-msg hidden" id="step-final">
+                        <p class="text-2xl font-heading font-bold text-white mb-2">Say less. You're on the list.</p>
+                        <p class="text-sm text-muted">Keep an eye out for updates.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE LOGIC & ANIMATIONS -->
+    <script>
+        const WAITLIST_API_URL = "/api/waitlist"; 
+
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        let width, height, particles = [];
+        const numParticles = window.innerWidth < 768 ? 500 : 1000;
+        let mouse = { x: -1000, y: -1000, radius: 100 };
+        let particleState = 'idle'; 
+        let textTargets = [], ecosystemNodes = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            ecosystemNodes = [
+                { x: width * 0.2, y: height * 0.3, label: 'finance' },
+                { x: width * 0.8, y: height * 0.25, label: 'ops' },
+                { x: width * 0.15, y: height * 0.7, label: 'sales' },
+                { x: width * 0.85, y: height * 0.75, label: 'marketing' },
+                { x: width * 0.5, y: height * 0.2, label: 'growth' },
+                { x: width * 0.5, y: height * 0.8, label: 'ai' }
+            ];
+            ecosystemNodes.forEach(node => {
+                const el = document.getElementById(`node-${node.label}`);
+                if(el) { el.style.left = `${node.x}px`; el.style.top = `${node.y}px`; }
+            });
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.tx = this.x; this.ty = this.y;
+                this.vx = 0; this.vy = 0;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.alpha = Math.random() * 0.5 + 0.1;
+                this.nodeIndex = Math.floor(Math.random() * ecosystemNodes.length);
+                this.angle = Math.random() * Math.PI * 2;
+                this.radius = Math.random() * 100 + 20; 
+                this.speed = (Math.random() - 0.5) * 0.02;
+            }
+            update() {
+                let dx = mouse.x - this.x, dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let force = Math.max(0, (mouse.radius - distance) / mouse.radius);
+                let repulseX = -(dx / distance) * force * 5 || 0;
+                let repulseY = -(dy / distance) * force * 5 || 0;
+
+                if (particleState === 'idle') {
+                    this.x += (Math.random() - 0.5) * 0.5 + repulseX;
+                    this.y += (Math.random() - 0.5) * 0.5 + repulseY;
+                    if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+                    if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+                    this.alpha = Math.min(0.6, this.alpha + 0.01);
+                } else if (particleState === 'text' || particleState === 'luckyText') {
+                    // Tighter snap for text
+                    this.vx = (this.tx - this.x) * 0.1; this.vy = (this.ty - this.y) * 0.1;
+                    this.x += this.vx + repulseX; this.y += this.vy + repulseY;
+                    this.alpha = 0.8;
+                } else if (particleState === 'ecosystem') {
+                    let node = ecosystemNodes[this.nodeIndex];
+                    this.angle += this.speed;
+                    this.tx = node.x + Math.cos(this.angle) * this.radius;
+                    this.ty = node.y + Math.sin(this.angle) * this.radius;
+                    this.vx = (this.tx - this.x) * 0.05; this.vy = (this.ty - this.y) * 0.05;
+                    this.x += this.vx + repulseX; this.y += this.vy + repulseY;
+                    this.alpha = Math.max(0.1, 0.6 - (this.radius / 150));
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+        }
+
+        function getSingleLineCoordinates(text) {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+            tempCanvas.width = width; tempCanvas.height = height;
+            let fontSize = width < 768 ? 60 : 120;
+            tempCtx.fillStyle = 'white';
+            tempCtx.font = `800 ${fontSize}px 'Space Grotesk', sans-serif`;
+            tempCtx.textAlign = 'center'; tempCtx.textBaseline = 'middle';
+            tempCtx.fillText(text, width/2, height/2);
+            return extractPoints(tempCtx);
+        }
+
+        function getMultiLineCoordinates() {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+            tempCanvas.width = width; tempCanvas.height = height;
+            let fontSize = width < 768 ? 32 : 60; 
+            tempCtx.fillStyle = 'white';
+            tempCtx.font = `800 ${fontSize}px 'Space Grotesk', sans-serif`;
+            tempCtx.textAlign = 'center'; tempCtx.textBaseline = 'middle';
+            
+            tempCtx.fillText('NOW PEOPLE CAN', width/2, height/2 - fontSize);
+            tempCtx.fillText('CALL YOU LUCKY', width/2, height/2 + fontSize/2);
+            return extractPoints(tempCtx, width < 768 ? 3 : 5);
+        }
+
+        function extractPoints(context, stepSize = null) {
+            const imageData = context.getImageData(0, 0, width, height).data;
+            let coordinates = [];
+            let step = stepSize || (width < 768 ? 4 : 6);
+            for (let y = 0; y < height; y += step) {
+                for (let x = 0; x < width; x += step) {
+                    if (imageData[(y * width + x) * 4 + 3] > 128) coordinates.push({ x, y });
+                }
+            }
+            return coordinates;
+        }
+
+        function assignTargets(type) {
+            textTargets = type === 'luckyText' ? getMultiLineCoordinates() : getSingleLineCoordinates('SCALYTH');
+            for (let i = textTargets.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [textTargets[i], textTargets[j]] = [textTargets[j], textTargets[i]];
+            }
+            particles.forEach((p, i) => {
+                if (i < textTargets.length) { p.tx = textTargets[i].x; p.ty = textTargets[i].y; } 
+                else { p.tx = Math.random() * width; p.ty = Math.random() * height; }
+            });
+        }
+
+        function animate() {
+            ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, width, height);
+            if (particleState === 'ecosystem') {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)'; ctx.lineWidth = 1; ctx.beginPath();
+                for (let i = 0; i < ecosystemNodes.length; i++) {
+                    for (let j = i + 1; j < ecosystemNodes.length; j++) {
+                        ctx.moveTo(ecosystemNodes[i].x, ecosystemNodes[i].y);
+                        ctx.lineTo(ecosystemNodes[j].x, ecosystemNodes[j].y);
+                    }
+                }
+                ctx.stroke();
+            }
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        initCanvas(); createParticles(); animate();
+        window.addEventListener('resize', () => { 
+            initCanvas(); 
+            if(particleState === 'text' || particleState === 'luckyText') assignTargets(particleState); 
+        });
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
+
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".hero-elem", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out", delay: 0.2 });
+        gsap.to(".reveal-text", { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2 });
+        
+        gsap.utils.toArray('.scroll-reveal').forEach(el => {
+            gsap.fromTo(el, { y: 30, opacity: 0 }, {
+                scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+                y: 0, opacity: 1, duration: 1, ease: "power2.out"
+            });
+        });
+
+        // WAITLIST OVERLAY LOGIC
+        const overlay = document.getElementById('waitlist-overlay');
+        const mainContent = document.getElementById('main-content');
+        const ecoLabels = document.getElementById('ecosystem-labels');
+        const spamToast = document.getElementById('spam-toast');
+        let isWaitlistOpen = false;
+
+        function triggerWaitlistTransition() {
+            if(isWaitlistOpen) return;
+            isWaitlistOpen = true;
+
+            mainContent.style.opacity = '0';
+            // Hide main content completely to avoid text overlap later
+            setTimeout(() => {
+                if (particleState !== 'luckyText') {
+                    mainContent.style.display = 'none';
+                }
+            }, 500);
+            
+            particleState = 'text';
+            assignTargets('text');
+            
+            setTimeout(() => {
+                particleState = 'ecosystem';
+                ecoLabels.classList.remove('hidden');
+                setTimeout(() => document.querySelectorAll('.eco-node').forEach(n => n.style.opacity = '1'), 100);
+                
+                overlay.classList.remove('pointer-events-none');
+                overlay.style.opacity = '1';
+                
+                document.getElementById('chat-name').focus();
+            }, 2500); 
+        }
+
+        function closeWaitlist() {
+            if(!isWaitlistOpen) return;
+            isWaitlistOpen = false;
+
+            overlay.style.opacity = '0';
+            spamToast.classList.remove('show'); 
+            setTimeout(() => overlay.classList.add('pointer-events-none'), 500);
+            
+            document.querySelectorAll('.eco-node').forEach(n => n.style.opacity = '0');
+            setTimeout(() => ecoLabels.classList.add('hidden'), 500);
+
+            // KEY FIX: If it is the success state, leave main content hidden so it doesn't overlap!
+            if (particleState !== 'luckyText') {
+                particleState = 'idle';
+                mainContent.style.display = 'flex';
+                setTimeout(() => mainContent.style.opacity = '1', 50);
+            }
+        }
+
+        // CONVERSATIONAL CHAT LOGIC
+        const nameInput = document.getElementById('chat-name');
+        const emailInput = document.getElementById('chat-email');
+        const roleInput = document.getElementById('chat-role');
+        const submitBtn = document.getElementById('submit-btn');
+
+        nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && nameInput.value.trim() !== '') {
+                nameInput.disabled = true;
+                nameInput.classList.add('text-gray-400');
+                document.getElementById('display-name').innerText = nameInput.value.trim();
+                
+                spamToast.classList.add('show');
+                
+                setTimeout(() => {
+                    const nextStep = document.getElementById('step-2-q');
+                    nextStep.classList.remove('hidden');
+                    setTimeout(() => {
+                        nextStep.classList.add('active');
+                        emailInput.focus();
+                        setTimeout(() => spamToast.classList.remove('show'), 4000);
+                    }, 50);
+                }, 800);
+            }
+        });
+
+        emailInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && emailInput.value.includes('@')) {
+                emailInput.disabled = true;
+                emailInput.classList.add('text-gray-400');
+                
+                const nextStep = document.getElementById('step-3-q');
+                nextStep.classList.remove('hidden');
+                setTimeout(() => {
+                    nextStep.classList.add('active');
+                    roleInput.focus();
+                }, 50);
+            }
+        });
+
+        roleInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && roleInput.value.trim() !== '') {
+                roleInput.disabled = true;
+                roleInput.classList.add('text-gray-400');
+                submitBtn.classList.remove('hidden');
+                submitBtn.focus();
+            }
+        });
+
+        function triggerSuccessAnimations() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+
+            particleState = 'luckyText';
+            assignTargets('luckyText');
+
+            document.querySelectorAll('.eco-node').forEach(n => n.style.opacity = '0');
+        }
+
+        // FAKE API CALL FOR ANIMATIONS
+        submitBtn.addEventListener('click', () => {
+            submitBtn.innerText = 'WAIT...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                submitBtn.classList.add('hidden');
+                const finalStep = document.getElementById('step-final');
+                finalStep.classList.remove('hidden');
+                
+                setTimeout(() => finalStep.classList.add('active'), 50);
+                
+                triggerSuccessAnimations();
+
+                setTimeout(() => {
+                    closeWaitlist();
+                }, 2500);
+
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

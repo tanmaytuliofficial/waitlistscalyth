@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalyth Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#050505] text-white p-8 font-sans">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-2xl font-medium tracking-tight">Scalyth / Waitlist Admin</h1>
+            <button onclick="exportCSV()" class="text-sm px-4 py-2 border border-gray-700 rounded hover:bg-gray-800 transition">Export CSV</button>
+        </div>
+
+        <div id="authPrompt" class="mb-10">
+            <input type="password" id="adminSecret" placeholder="Admin Secret" class="bg-[#111] border border-gray-800 rounded px-4 py-2 text-white">
+            <button onclick="loadData()" class="px-4 py-2 bg-white text-black rounded font-medium ml-2">Login</button>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse hidden" id="dataTable">
+                <thead>
+                    <tr class="border-b border-gray-800 text-sm text-gray-500">
+                        <th class="py-3 px-4">Date</th>
+                        <th class="py-3 px-4">Email</th>
+                        <th class="py-3 px-4">Name</th>
+                        <th class="py-3 px-4">Role</th>
+                        <th class="py-3 px-4">Interest</th>
+                        <th class="py-3 px-4">Source</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody" class="text-sm"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let waitlistData = [];
+
+        async function loadData() {
+            const secret = document.getElementById('adminSecret').value;
+            try {
+                // Update with your Worker URL
+                const res = await fetch('https://api.YOUR-WORKER.workers.dev/api/admin/waitlist', {
+                    headers: { 'Authorization': `Bearer ${secret}` }
+                });
+                
+                if(!res.ok) throw new Error('Unauthorized');
+                
+                waitlistData = await res.json();
+                document.getElementById('authPrompt').classList.add('hidden');
+                document.getElementById('dataTable').classList.remove('hidden');
+                
+                renderTable();
+            } catch(e) {
+                alert('Invalid secret or connection error');
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = waitlistData.map(row => `
+                <tr class="border-b border-gray-900 hover:bg-[#111] transition">
+                    <td class="py-3 px-4 text-gray-500">${new Date(row.created_at).toLocaleDateString()}</td>
+                    <td class="py-3 px-4 font-medium">${row.email}</td>
+                    <td class="py-3 px-4">${row.name || '-'}</td>
+                    <td class="py-3 px-4">${row.role || '-'}</td>
+                    <td class="py-3 px-4 text-gray-400">${row.interest || '-'}</td>
+                    <td class="py-3 px-4 text-xs text-gray-600">${row.utm_source || 'Direct'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function exportCSV() {
+            if(!waitlistData.length) return;
+            const headers = ['created_at', 'email', 'name', 'role', 'interest', 'utm_source'];
+            const csv = [
+                headers.join(','),
+                ...waitlistData.map(row => headers.map(field => `"${row[field] || ''}"`).join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'scalyth_waitlist.csv');
+            a.click();
+        }
+    </script>
+</body>
+</html>
