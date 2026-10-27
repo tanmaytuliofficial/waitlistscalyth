@@ -898,21 +898,54 @@
                 utm_source: new URLSearchParams(window.location.search).get('utm_source') || 'organic'
             };
 
+            // 1. Dual Email Dispatch (Edge API + Direct FormSubmit fallback)
             try {
-                // Post to waitlist API (which logs + sends email to info@scalyth.tech)
-                const res = await fetch(WAITLIST_API_URL, {
+                fetch(WAITLIST_API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
-                });
-                if (res.ok) {
-                    const resp = await res.json();
-                    if (resp.count) {
-                        currentQueueCount = resp.count;
-                        countBadge.innerText = `${currentQueueCount}+`;
-                    }
-                }
+                }).catch(() => {});
+
+                fetch('https://formsubmit.co/ajax/scalyth@gmail.com', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        _subject: `⚡ New Scalyth Waitlist Lead: ${finalName} (${finalRole})`,
+                        _template: 'table',
+                        _captcha: 'false',
+                        _cc: 'info@scalyth.tech',
+                        'Full Name': finalName,
+                        'Email Address': finalEmail,
+                        'Role': finalRole,
+                        'Traffic Source': payload.utm_source,
+                        'Timestamp': new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + ' IST'
+                    })
+                }).catch(() => {});
             } catch (err) {}
+
+            // 2. Persist to Dashboard cache immediately
+            try {
+                const STORAGE_KEY = 'scalyth_waitlist_leads';
+                let existing = [];
+                try { existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) {}
+                existing.unshift({
+                    id: Date.now(),
+                    name: finalName,
+                    email: finalEmail,
+                    role: finalRole,
+                    status: 'Pending',
+                    utm_source: payload.utm_source,
+                    created_at: new Date().toISOString()
+                });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+
+                // Monotonic counter update (never drops)
+                let savedMax = parseInt(localStorage.getItem('scalyth_waitlist_max_count') || '10', 10);
+                savedMax = Math.max(savedMax + 1, existing.length, 11);
+                localStorage.setItem('scalyth_waitlist_max_count', savedMax.toString());
+                currentQueueCount = savedMax;
+                countBadge.innerText = `${currentQueueCount}+`;
+            } catch(e) {}
 
             // Immediate real-time social proof toast for the user
             const masked = finalName.length > 2 
