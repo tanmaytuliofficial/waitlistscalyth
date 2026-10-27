@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#07070A] text-[#EDEDED] antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalyth Waitlist — Live Command Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'sans-serif'],
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#07070A] text-neutral-200 font-sans p-4 sm:p-8">
+
+    <!-- AUTHENTICATION MODAL (If not logged in) -->
+    <div id="authModal" class="fixed inset-0 z-50 bg-[#07070A]/95 backdrop-blur-xl flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-[#101016] border border-white/10 rounded-3xl p-8 shadow-2xl text-center">
+            <div class="w-12 h-12 rounded-2xl bg-white text-black font-heading font-black text-lg flex items-center justify-center mx-auto mb-4">
+                S
+            </div>
+            <h2 class="text-xl font-heading font-bold text-white mb-2">Scalyth Command Center</h2>
+            <p class="text-xs text-neutral-400 mb-6">Enter admin passcode to unlock waitlist intelligence</p>
+            
+            <form onsubmit="handleAuth(event)" class="space-y-4">
+                <input 
+                    type="password" 
+                    id="passcodeInput" 
+                    placeholder="Enter passcode (default: scalyth2026)" 
+                    class="w-full px-5 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-white/30 text-center tracking-widest"
+                    autofocus
+                />
+                <button 
+                    type="submit" 
+                    class="w-full py-3 rounded-xl bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                >
+                    Unlock Dashboard →
+                </button>
+            </form>
+            <p id="authError" class="text-xs text-red-400 mt-3 hidden">Incorrect passcode. Try again.</p>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div id="dashboardApp" class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- TOP NAV / HEADER -->
+        <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.08]">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-white text-black font-heading font-black text-sm flex items-center justify-center shadow-lg">
+                    S
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-heading font-bold text-white">Scalyth / Waitlist</h1>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-[10px]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE SYNC
+                        </span>
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-0.5">Automated forwarding to <span class="text-neutral-300 font-mono">info@scalyth.tech</span></p>
+                </div>
+            </div>
+
+            <!-- Header Action Buttons -->
+            <div class="flex items-center gap-3">
+                <button onclick="refreshData()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-medium text-neutral-300 transition-all">
+                    <span>↻</span> Refresh
+                </button>
+                <button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.15)]">
+                    <span>↓</span> Export CSV
+                </button>
+                <button onclick="logout()" class="px-3 py-2 rounded-xl bg-white/[0.02] hover:bg-red-500/10 hover:text-red-400 text-neutral-500 text-xs transition-all border border-transparent hover:border-red-500/20">
+                    Exit
+                </button>
+            </div>
+        </header>
+
+        <!-- KPI METRIC CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
+                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Total Waitlist Queue</p>
+                <div class="flex items-baseline gap-2">
+                    <span id="kpiTotal" class="text-3xl sm:text-4xl font-heading font-bold text-white">0</span>
+                    <span class="text-xs font-mono text-emerald-400">10+ Genesis</span>
+                </div>
+                <p class="text-[11px] text-neutral-500 mt-2">Active founder priority</p>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
+                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Founders & C-Level</p>
+                <div class="flex items-baseline gap-2">
+                    <span id="kpiFounders" class="text-3xl sm:text-4xl font-heading font-bold text-white">0</span>
+                    <span id="kpiFounderPct" class="text-xs font-mono text-neutral-400">0%</span>
+                </div>
+                <p class="text-[11px] text-neutral-500 mt-2">High purchasing intent</p>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
+                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Alert Destination</p>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-base sm:text-lg font-mono font-semibold text-emerald-400 truncate">info@scalyth.tech</span>
+                </div>
+                <p class="text-[11px] text-neutral-500 mt-2">Instant dispatch on new signup</p>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
+                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Latest Activity</p>
+                <div class="flex items-baseline gap-2">
+                    <span id="kpiLatest" class="text-sm font-medium text-neutral-300 truncate">Listening...</span>
+                </div>
+                <p class="text-[11px] text-neutral-500 mt-2" id="kpiLatestTime">Live feed active</p>
+            </div>
+
+        </div>
+
+        <!-- SEARCH & FILTER TOOLBAR -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-3 rounded-2xl bg-[#101016]/50 border border-white/[0.06]">
+            
+            <!-- Search Input -->
+            <div class="w-full sm:w-80 relative">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    oninput="filterData()"
+                    placeholder="Search name, email, or role..." 
+                    class="w-full px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-white/30"
+                />
+            </div>
+
+            <!-- Role Filter Pills -->
+            <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+                <button onclick="setRoleFilter('ALL')" class="role-pill active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white text-black">
+                    All (<span id="pillCountAll">0</span>)
+                </button>
+                <button onclick="setRoleFilter('Founder')" class="role-pill px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/[0.04] text-neutral-400 hover:text-white">
+                    Founders
+                </button>
+                <button onclick="setRoleFilter('Tech')" class="role-pill px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/[0.04] text-neutral-400 hover:text-white">
+                    Tech & Dev
+                </button>
+                <button onclick="setRoleFilter('Operator')" class="role-pill px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/[0.04] text-neutral-400 hover:text-white">
+                    Operators
+                </button>
+            </div>
+        </div>
+
+        <!-- DATA TABLE -->
+        <div class="rounded-3xl bg-[#101016]/90 border border-white/[0.08] overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/[0.08] bg-white/[0.02] text-[11px] font-mono text-neutral-500 uppercase tracking-wider">
+                            <th class="py-4 px-6">User / Contact</th>
+                            <th class="py-4 px-6">Role</th>
+                            <th class="py-4 px-6">Date & Time</th>
+                            <th class="py-4 px-6">Source</th>
+                            <th class="py-4 px-6 text-right">Dispatch Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-white/[0.04] text-xs">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" class="hidden p-12 text-center">
+                <p class="text-neutral-500 text-xs">No matching signups found.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const AUTH_KEY = 'scalyth_admin_auth';
+        const DEFAULT_PASS = 'scalyth2026';
+        let rawData = [];
+        let activeRoleFilter = 'ALL';
+
+        function checkAuth() {
+            const isAuth = localStorage.getItem(AUTH_KEY) === 'true';
+            if (isAuth) {
+                document.getElementById('authModal').classList.add('hidden');
+                loadWaitlistData();
+            } else {
+                document.getElementById('authModal').classList.remove('hidden');
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const pass = document.getElementById('passcodeInput').value.trim();
+            if (pass === DEFAULT_PASS) {
+                localStorage.setItem(AUTH_KEY, 'true');
+                document.getElementById('authModal').classList.add('hidden');
+                loadWaitlistData();
+            } else {
+                document.getElementById('authError').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem(AUTH_KEY);
+            location.reload();
+        }
+
+        async function loadWaitlistData() {
+            try {
+                // Fetch from our local server or Cloudflare worker
+                const res = await fetch('/api/admin/waitlist');
+                if (res.ok) {
+                    rawData = await res.json();
+                } else {
+                    // Fallback to static seed
+                    const staticRes = await fetch('/waitlist_data.json');
+                    rawData = await staticRes.json();
+                }
+            } catch (e) {
+                try {
+                    const staticRes = await fetch('/waitlist_data.json');
+                    rawData = await staticRes.json();
+                } catch(err) {
+                    rawData = [];
+                }
+            }
+
+            renderDashboard();
+        }
+
+        function refreshData() {
+            loadWaitlistData();
+        }
+
+        function renderDashboard() {
+            // Update KPIs
+            document.getElementById('kpiTotal').innerText = rawData.length;
+            
+            const founders = rawData.filter(d => /founder|ceo|co-founder/i.test(d.role || ''));
+            document.getElementById('kpiFounders').innerText = founders.length;
+            const founderPct = rawData.length ? Math.round((founders.length / rawData.length) * 100) : 0;
+            document.getElementById('kpiFounderPct').innerText = `${founderPct}%`;
+
+            if (rawData.length > 0) {
+                const latest = rawData[0];
+                document.getElementById('kpiLatest').innerText = `${latest.name || 'Anonymous'} (${latest.role || 'Member'})`;
+                document.getElementById('kpiLatestTime').innerText = new Date(latest.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            document.getElementById('pillCountAll').innerText = rawData.length;
+
+            filterData();
+        }
+
+        function setRoleFilter(role) {
+            activeRoleFilter = role;
+            document.querySelectorAll('.role-pill').forEach(pill => {
+                pill.classList.remove('bg-white', 'text-black');
+                pill.classList.add('bg-white/[0.04]', 'text-neutral-400');
+            });
+            event.target.classList.remove('bg-white/[0.04]', 'text-neutral-400');
+            event.target.classList.add('bg-white', 'text-black');
+            filterData();
+        }
+
+        function filterData() {
+            const query = (document.getElementById('searchInput').value || '').toLowerCase();
+            const filtered = rawData.filter(row => {
+                const matchQuery = 
+                    (row.name || '').toLowerCase().includes(query) ||
+                    (row.email || '').toLowerCase().includes(query) ||
+                    (row.role || '').toLowerCase().includes(query);
+
+                if (!matchQuery) return false;
+
+                if (activeRoleFilter === 'ALL') return true;
+                if (activeRoleFilter === 'Founder') return /founder|ceo/i.test(row.role || '');
+                if (activeRoleFilter === 'Tech') return /cto|dev|engineer|tech/i.test(row.role || '');
+                if (activeRoleFilter === 'Operator') return /operator|growth|marketing|lead/i.test(row.role || '');
+                return true;
+            });
+
+            renderTable(filtered);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            if (data.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            tbody.innerHTML = data.map((row, idx) => {
+                const date = row.created_at ? new Date(row.created_at) : new Date();
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                // Avatar initials & color
+                const initial = (row.name || row.email || 'S')[0].toUpperCase();
+                const colors = [
+                    'from-blue-500 to-indigo-600',
+                    'from-purple-500 to-pink-600',
+                    'from-emerald-500 to-teal-600',
+                    'from-amber-500 to-orange-600'
+                ];
+                const grad = colors[idx % colors.length];
+
+                return `
+                    <tr class="hover:bg-white/[0.02] transition-colors">
+                        <td class="py-4 px-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr ${grad} flex items-center justify-center text-white font-bold text-xs shrink-0">
+                                    ${initial}
+                                </div>
+                                <div>
+                                    <div class="font-medium text-white">${row.name || 'Anonymous'}</div>
+                                    <a href="mailto:${row.email}" class="text-neutral-400 hover:text-white font-mono text-[11px] transition-colors">${row.email}</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-mono bg-white/[0.05] border border-white/10 text-neutral-300">
+                                ${row.role || 'Member'}
+                            </span>
+                        </td>
+                        <td class="py-4 px-6 font-mono text-[11px] text-neutral-400">
+                            <div>${formattedDate}</div>
+                            <div class="text-neutral-600 text-[10px]">${formattedTime}</div>
+                        </td>
+                        <td class="py-4 px-6">
+                            <span class="text-[11px] font-mono text-neutral-500 uppercase">${row.utm_source || 'direct'}</span>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Dispatched to info@
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function exportCSV() {
+            if (!rawData.length) return;
+            const headers = ['created_at', 'name', 'email', 'role', 'utm_source'];
+            const csvRows = [
+                headers.join(','),
+                ...rawData.map(row => headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`).join(','))
+            ];
+            const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `scalyth_waitlist_${new Date().toISOString().split('T')[0]}.csv`);
+            a.click();
+        }
+
+        // Initialize auth & data
+        checkAuth();
+    </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+node_modules/
+*.backup.html
+emails_dispatched.log
+.DS_Store
+Thumbs.db

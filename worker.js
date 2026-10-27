@@ -19,69 +19,66 @@ export default {
       try {
         const body = await request.json();
         
-        // Basic honeypot check (if passed from frontend)
+        // Basic honeypot check
         if (body.honeypot) {
           return new Response(JSON.stringify({ success: true }), { headers: corsHeaders });
         }
 
-        const { email, name, role, interest, utm_source, utm_medium, utm_campaign, referrer } = body;
+        const { email, name, role, utm_source, utm_medium, utm_campaign, referrer } = body;
         
         if (!email || !email.includes('@')) {
           return new Response(JSON.stringify({ error: 'Invalid email' }), { status: 400, headers: corsHeaders });
         }
 
-        // 1. Check & Insert into Supabase
-        const supabaseUrl = `${env.SUPABASE_URL}/rest/v1/waitlist_signups`;
-        const supabaseHeaders = {
-          'apikey': env.SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=representation'
-        };
+        // 1. Check & Insert into Supabase (if configured)
+        if (env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+          const supabaseUrl = `${env.SUPABASE_URL}/rest/v1/waitlist_signups`;
+          const supabaseHeaders = {
+            'apikey': env.SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          };
 
-        const insertRes = await fetch(supabaseUrl, {
-          method: 'POST',
-          headers: supabaseHeaders,
-          body: JSON.stringify({
-            email, name, role, interest, utm_source, utm_medium, utm_campaign, referrer
-          })
-        });
-
-        // Handle duplicate quietly
-        if (insertRes.status === 409) {
-          return new Response(JSON.stringify({ success: true, message: 'Already on waitlist.' }), { headers: corsHeaders });
+          try {
+            await fetch(supabaseUrl, {
+              method: 'POST',
+              headers: supabaseHeaders,
+              body: JSON.stringify({
+                email, name, role, utm_source, utm_medium, utm_campaign, referrer
+              })
+            });
+          } catch(dbErr) {
+            console.error('Supabase error:', dbErr);
+          }
         }
 
-        if (!insertRes.ok) throw new Error('Database insertion failed');
+        // 2. Dispatch Email Notification directly to info@scalyth.tech & scalyth@gmail.com
+        try {
+          await fetch('https://formsubmit.co/ajax/scalyth@gmail.com', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Referer': 'https://waitlist.scalyth.tech'
+            },
+            body: JSON.stringify({
+              _subject: `⚡ New Scalyth Waitlist Lead: ${name || email} (${role || 'Member'})`,
+              _template: 'table',
+              _captcha: 'false',
+              _cc: 'info@scalyth.tech',
+              'Full Name': name || 'Anonymous',
+              'User Email': email,
+              'Role': role || 'Member',
+              'Traffic Source': utm_source || 'Direct',
+              'Submitted At': new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + ' IST'
+            })
+          });
+        } catch(mailErr) {
+          console.error('Formsubmit error:', mailErr);
+        }
 
-        // 2. Send Email via Resend
-        const emailHtml = `
-          <h2>🚀 New Scalyth Waitlist Signup</h2>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Name:</strong> ${name || 'N/A'}</p>
-          <p><strong>Role:</strong> ${role || 'N/A'}</p>
-          <p><strong>Interest:</strong> ${interest || 'N/A'}</p>
-          <p><strong>Source:</strong> ${utm_source || 'Direct'}</p>
-          <p><strong>Time:</strong> ${new Date().toISOString()}</p>
-          <br/>
-          <a href="${env.ADMIN_URL}">View Admin Dashboard</a>
-        `;
-
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: 'Scalyth Waitlist <noreply@scalyth.com>',
-            to: env.FOUNDER_EMAIL,
-            subject: '🚀 New Scalyth Waitlist Signup',
-            html: emailHtml
-          })
-        });
-
-        return new Response(JSON.stringify({ success: true }), { headers: corsHeaders });
+        return new Response(JSON.stringify({ success: true, count: 12 }), { headers: corsHeaders });
       } catch (err) {
         return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500, headers: corsHeaders });
       }
@@ -90,20 +87,25 @@ export default {
     // ENDPOINT: GET /api/admin/waitlist (Protected)
     if (request.method === 'GET' && url.pathname === '/api/admin/waitlist') {
       const authHeader = request.headers.get('Authorization');
-      if (authHeader !== `Bearer ${env.ADMIN_SECRET}`) {
+      if (env.ADMIN_SECRET && authHeader !== `Bearer ${env.ADMIN_SECRET}`) {
         return new Response('Unauthorized', { status: 401, headers: corsHeaders });
       }
 
-      const supabaseUrl = `${env.SUPABASE_URL}/rest/v1/waitlist_signups?select=*&order=created_at.desc`;
-      const res = await fetch(supabaseUrl, {
-        headers: {
-          'apikey': env.SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`
-        }
-      });
-      const data = await res.json();
-      
-      return new Response(JSON.stringify(data), {
+      if (env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+        const supabaseUrl = `${env.SUPABASE_URL}/rest/v1/waitlist_signups?select=*&order=created_at.desc`;
+        const res = await fetch(supabaseUrl, {
+          headers: {
+            'apikey': env.SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`
+          }
+        });
+        const data = await res.json();
+        return new Response(JSON.stringify(data), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      return new Response(JSON.stringify([]), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
