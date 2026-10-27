@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scalyth Waitlist — Live Command Dashboard</title>
+    <title>Scalyth Command — Private Waitlist Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -37,8 +37,8 @@
 </head>
 <body class="min-h-screen bg-[#07070A] text-neutral-200 font-sans p-4 sm:p-8">
 
-    <!-- AUTHENTICATION MODAL (If not logged in) -->
-    <div id="authModal" class="fixed inset-0 z-50 bg-[#07070A]/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <!-- AUTHENTICATION MODAL -->
+    <div id="authModal" class="fixed inset-0 z-50 bg-[#07070A]/95 backdrop-blur-2xl flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-[#101016] border border-white/10 rounded-3xl p-8 shadow-2xl text-center">
             <div class="w-12 h-12 rounded-2xl bg-white text-black font-heading font-black text-lg flex items-center justify-center mx-auto mb-4">
                 S
@@ -76,21 +76,24 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="text-xl sm:text-2xl font-heading font-bold text-white">Scalyth / Waitlist</h1>
+                        <h1 class="text-xl sm:text-2xl font-heading font-bold text-white">Scalyth / Waitlist Command</h1>
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-[10px]">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE SYNC
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
                         </span>
                     </div>
-                    <p class="text-xs text-neutral-500 mt-0.5">Automated forwarding to <span class="text-neutral-300 font-mono">info@scalyth.tech</span></p>
+                    <p class="text-xs text-neutral-500 mt-0.5">Private management & routing to <span class="text-neutral-300 font-mono">info@scalyth.tech</span></p>
                 </div>
             </div>
 
             <!-- Header Action Buttons -->
-            <div class="flex items-center gap-3">
-                <button onclick="refreshData()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-medium text-neutral-300 transition-all">
+            <div class="flex items-center gap-2.5 flex-wrap">
+                <button onclick="openAddModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.15)]">
+                    <span>+</span> Add Lead
+                </button>
+                <button onclick="refreshData()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-medium text-neutral-300 transition-all">
                     <span>↻</span> Refresh
                 </button>
-                <button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.15)]">
+                <button onclick="exportCSV()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-medium text-neutral-300 transition-all">
                     <span>↓</span> Export CSV
                 </button>
                 <button onclick="logout()" class="px-3 py-2 rounded-xl bg-white/[0.02] hover:bg-red-500/10 hover:text-red-400 text-neutral-500 text-xs transition-all border border-transparent hover:border-red-500/20">
@@ -102,36 +105,42 @@
         <!-- KPI METRIC CARDS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
+            <!-- Public Displayed Counter -->
+            <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08] relative overflow-hidden">
+                <div class="flex justify-between items-start mb-1">
+                    <p class="text-xs font-mono uppercase tracking-wider text-neutral-400">Public Front Counter</p>
+                    <button onclick="editPublicCounter()" title="Adjust front-page counter" class="text-neutral-500 hover:text-white text-xs">✎</button>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span id="kpiPublicCounter" class="text-3xl sm:text-4xl font-heading font-bold text-emerald-400">10+</span>
+                </div>
+                <p class="text-[11px] text-neutral-500 mt-2">Never decreases (even on delete)</p>
+            </div>
+
+            <!-- Active Leads In Database -->
             <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
-                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Total Waitlist Queue</p>
+                <p class="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-1">Active Leads Queue</p>
                 <div class="flex items-baseline gap-2">
                     <span id="kpiTotal" class="text-3xl sm:text-4xl font-heading font-bold text-white">0</span>
-                    <span class="text-xs font-mono text-emerald-400">10+ Genesis</span>
+                    <span class="text-xs font-mono text-neutral-400">in management</span>
                 </div>
-                <p class="text-[11px] text-neutral-500 mt-2">Active founder priority</p>
+                <p class="text-[11px] text-neutral-500 mt-2" id="kpiFounders">0 Founders</p>
             </div>
 
+            <!-- Alert Dispatch -->
             <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
-                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Founders & C-Level</p>
+                <p class="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-1">Notification Routing</p>
                 <div class="flex items-baseline gap-2">
-                    <span id="kpiFounders" class="text-3xl sm:text-4xl font-heading font-bold text-white">0</span>
-                    <span id="kpiFounderPct" class="text-xs font-mono text-neutral-400">0%</span>
+                    <span class="text-sm sm:text-base font-mono font-semibold text-emerald-400 truncate">info@scalyth.tech</span>
                 </div>
-                <p class="text-[11px] text-neutral-500 mt-2">High purchasing intent</p>
+                <p class="text-[11px] text-neutral-500 mt-2">Forwarding to scalyth@gmail.com</p>
             </div>
 
+            <!-- Latest Activity -->
             <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
-                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Alert Destination</p>
+                <p class="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-1">Latest Lead</p>
                 <div class="flex items-baseline gap-2">
-                    <span class="text-base sm:text-lg font-mono font-semibold text-emerald-400 truncate">info@scalyth.tech</span>
-                </div>
-                <p class="text-[11px] text-neutral-500 mt-2">Instant dispatch on new signup</p>
-            </div>
-
-            <div class="p-6 rounded-3xl bg-[#101016]/80 border border-white/[0.08]">
-                <p class="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">Latest Activity</p>
-                <div class="flex items-baseline gap-2">
-                    <span id="kpiLatest" class="text-sm font-medium text-neutral-300 truncate">Listening...</span>
+                    <span id="kpiLatest" class="text-sm font-medium text-neutral-200 truncate">Listening...</span>
                 </div>
                 <p class="text-[11px] text-neutral-500 mt-2" id="kpiLatestTime">Live feed active</p>
             </div>
@@ -147,7 +156,7 @@
                     type="text" 
                     id="searchInput" 
                     oninput="filterData()"
-                    placeholder="Search name, email, or role..." 
+                    placeholder="Search name, email, role, or notes..." 
                     class="w-full px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-white/30"
                 />
             </div>
@@ -166,6 +175,9 @@
                 <button onclick="setRoleFilter('Operator')" class="role-pill px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/[0.04] text-neutral-400 hover:text-white">
                     Operators
                 </button>
+                <button onclick="setRoleFilter('VIP')" class="role-pill px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-white/[0.04] text-neutral-400 hover:text-white">
+                    VIP
+                </button>
             </div>
         </div>
 
@@ -177,9 +189,10 @@
                         <tr class="border-b border-white/[0.08] bg-white/[0.02] text-[11px] font-mono text-neutral-500 uppercase tracking-wider">
                             <th class="py-4 px-6">User / Contact</th>
                             <th class="py-4 px-6">Role</th>
-                            <th class="py-4 px-6">Date & Time</th>
-                            <th class="py-4 px-6">Source</th>
-                            <th class="py-4 px-6 text-right">Dispatch Status</th>
+                            <th class="py-4 px-6">Status</th>
+                            <th class="py-4 px-6">Date</th>
+                            <th class="py-4 px-6">Notes</th>
+                            <th class="py-4 px-6 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="divide-y divide-white/[0.04] text-xs">
@@ -189,23 +202,81 @@
             </div>
 
             <div id="emptyState" class="hidden p-12 text-center">
-                <p class="text-neutral-500 text-xs">No matching signups found.</p>
+                <p class="text-neutral-500 text-xs">No matching entries found.</p>
             </div>
         </div>
 
     </div>
 
+    <!-- EDIT / ADD MODAL -->
+    <div id="editModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="w-full max-w-md bg-[#111118] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <h3 id="modalTitle" class="text-base font-heading font-bold text-white">Edit Entry</h3>
+                <button onclick="closeModal()" class="text-neutral-500 hover:text-white text-lg">✕</button>
+            </div>
+
+            <form onsubmit="handleSaveEntry(event)" class="space-y-4">
+                <input type="hidden" id="editEntryId" />
+
+                <div>
+                    <label class="block text-[11px] font-mono text-neutral-400 uppercase mb-1">Full Name</label>
+                    <input type="text" id="editName" required class="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs focus:outline-none focus:border-white/30" />
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-mono text-neutral-400 uppercase mb-1">Email Address</label>
+                    <input type="email" id="editEmail" required class="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs focus:outline-none focus:border-white/30" />
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-mono text-neutral-400 uppercase mb-1">Role / Title</label>
+                    <input type="text" id="editRole" required class="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs focus:outline-none focus:border-white/30" />
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-mono text-neutral-400 uppercase mb-1">Status</label>
+                    <select id="editStatus" class="w-full px-4 py-2.5 rounded-xl bg-[#1a1a24] border border-white/10 text-white text-xs focus:outline-none focus:border-white/30">
+                        <option value="Pending">🟡 Pending Invite</option>
+                        <option value="Invited">🟢 Invited</option>
+                        <option value="VIP">🟣 VIP Cohort</option>
+                        <option value="Contacted">🔵 Contacted</option>
+                        <option value="Archived">⚪ Archived</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-mono text-neutral-400 uppercase mb-1">Internal Notes</label>
+                    <textarea id="editNotes" rows="2" placeholder="e.g. Spoke on Twitter, requested demo..." class="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs focus:outline-none focus:border-white/30"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-neutral-400 hover:text-white text-xs">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-neutral-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         const AUTH_KEY = 'scalyth_admin_auth';
         const DEFAULT_PASS = 'scalyth2026';
-        let rawData = [];
+        const STORAGE_KEY = 'scalyth_waitlist_leads';
+        const COUNTER_KEY = 'scalyth_waitlist_max_count';
+
+        let waitlistData = [];
         let activeRoleFilter = 'ALL';
+        let publicCounterValue = 10;
 
         function checkAuth() {
             const isAuth = localStorage.getItem(AUTH_KEY) === 'true';
             if (isAuth) {
                 document.getElementById('authModal').classList.add('hidden');
-                loadWaitlistData();
+                initData();
             } else {
                 document.getElementById('authModal').classList.remove('hidden');
             }
@@ -217,7 +288,7 @@
             if (pass === DEFAULT_PASS) {
                 localStorage.setItem(AUTH_KEY, 'true');
                 document.getElementById('authModal').classList.add('hidden');
-                loadWaitlistData();
+                initData();
             } else {
                 document.getElementById('authError').classList.remove('hidden');
             }
@@ -228,55 +299,97 @@
             location.reload();
         }
 
-        async function loadWaitlistData() {
-            try {
-                // Fetch from our local server or Cloudflare worker
-                const res = await fetch('/api/admin/waitlist');
-                if (res.ok) {
-                    rawData = await res.json();
-                } else {
-                    // Fallback to static seed
-                    const staticRes = await fetch('/waitlist_data.json');
-                    rawData = await staticRes.json();
-                }
-            } catch (e) {
-                try {
-                    const staticRes = await fetch('/waitlist_data.json');
-                    rawData = await staticRes.json();
-                } catch(err) {
-                    rawData = [];
+        // Initialize public counter (never drops)
+        function initCounter() {
+            let saved = parseInt(localStorage.getItem(COUNTER_KEY) || '10', 10);
+            publicCounterValue = Math.max(10, saved, waitlistData.length);
+            localStorage.setItem(COUNTER_KEY, publicCounterValue.toString());
+            document.getElementById('kpiPublicCounter').innerText = `${publicCounterValue}+`;
+        }
+
+        function editPublicCounter() {
+            const val = prompt("Enter new public waitlist counter value (minimum 10):", publicCounterValue);
+            if (val !== null) {
+                const parsed = parseInt(val, 10);
+                if (!isNaN(parsed) && parsed >= 10) {
+                    publicCounterValue = parsed;
+                    localStorage.setItem(COUNTER_KEY, publicCounterValue.toString());
+                    document.getElementById('kpiPublicCounter').innerText = `${publicCounterValue}+`;
+                    alert(`Public counter updated to ${publicCounterValue}+. It will never decrease on deleting entries.`);
                 }
             }
+        }
 
+        async function initData() {
+            // First check localStorage cache
+            const cached = localStorage.getItem(STORAGE_KEY);
+            if (cached) {
+                try {
+                    waitlistData = JSON.parse(cached);
+                } catch(e) {}
+            }
+
+            // If empty, fetch from API or waitlist_data.json
+            if (!waitlistData || waitlistData.length === 0) {
+                try {
+                    const res = await fetch('/api/admin/waitlist');
+                    if (res.ok) {
+                        waitlistData = await res.json();
+                    } else {
+                        const fallbackRes = await fetch('/waitlist_data.json');
+                        waitlistData = await fallbackRes.json();
+                    }
+                } catch (e) {
+                    try {
+                        const fallbackRes = await fetch('/waitlist_data.json');
+                        waitlistData = await fallbackRes.json();
+                    } catch(err) {
+                        waitlistData = [];
+                    }
+                }
+                saveToStorage();
+            }
+
+            initCounter();
             renderDashboard();
         }
 
+        function saveToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(waitlistData));
+            // Keep public counter >= waitlistData.length
+            if (waitlistData.length > publicCounterValue) {
+                publicCounterValue = waitlistData.length;
+                localStorage.setItem(COUNTER_KEY, publicCounterValue.toString());
+            }
+            initCounter();
+        }
+
         function refreshData() {
-            loadWaitlistData();
+            initData();
         }
 
         function renderDashboard() {
-            // Update KPIs
-            document.getElementById('kpiTotal').innerText = rawData.length;
-            
-            const founders = rawData.filter(d => /founder|ceo|co-founder/i.test(d.role || ''));
-            document.getElementById('kpiFounders').innerText = founders.length;
-            const founderPct = rawData.length ? Math.round((founders.length / rawData.length) * 100) : 0;
-            document.getElementById('kpiFounderPct').innerText = `${founderPct}%`;
+            document.getElementById('kpiTotal').innerText = waitlistData.length;
 
-            if (rawData.length > 0) {
-                const latest = rawData[0];
+            const founders = waitlistData.filter(d => /founder|ceo|co-founder/i.test(d.role || ''));
+            document.getElementById('kpiFounders').innerText = `${founders.length} Founders / C-Level`;
+
+            if (waitlistData.length > 0) {
+                const latest = waitlistData[0];
                 document.getElementById('kpiLatest').innerText = `${latest.name || 'Anonymous'} (${latest.role || 'Member'})`;
-                document.getElementById('kpiLatestTime').innerText = new Date(latest.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('kpiLatestTime').innerText = new Date(latest.created_at || Date.now()).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            } else {
+                document.getElementById('kpiLatest').innerText = "Queue empty";
+                document.getElementById('kpiLatestTime').innerText = "";
             }
 
-            document.getElementById('pillCountAll').innerText = rawData.length;
+            document.getElementById('pillCountAll').innerText = waitlistData.length;
 
             filterData();
         }
 
-        function setRoleFilter(role) {
-            activeRoleFilter = role;
+        function setRoleFilter(filter) {
+            activeRoleFilter = filter;
             document.querySelectorAll('.role-pill').forEach(pill => {
                 pill.classList.remove('bg-white', 'text-black');
                 pill.classList.add('bg-white/[0.04]', 'text-neutral-400');
@@ -288,11 +401,12 @@
 
         function filterData() {
             const query = (document.getElementById('searchInput').value || '').toLowerCase();
-            const filtered = rawData.filter(row => {
+            const filtered = waitlistData.filter(row => {
                 const matchQuery = 
                     (row.name || '').toLowerCase().includes(query) ||
                     (row.email || '').toLowerCase().includes(query) ||
-                    (row.role || '').toLowerCase().includes(query);
+                    (row.role || '').toLowerCase().includes(query) ||
+                    (row.notes || '').toLowerCase().includes(query);
 
                 if (!matchQuery) return false;
 
@@ -300,6 +414,7 @@
                 if (activeRoleFilter === 'Founder') return /founder|ceo/i.test(row.role || '');
                 if (activeRoleFilter === 'Tech') return /cto|dev|engineer|tech/i.test(row.role || '');
                 if (activeRoleFilter === 'Operator') return /operator|growth|marketing|lead/i.test(row.role || '');
+                if (activeRoleFilter === 'VIP') return row.status === 'VIP';
                 return true;
             });
 
@@ -321,9 +436,7 @@
             tbody.innerHTML = data.map((row, idx) => {
                 const date = row.created_at ? new Date(row.created_at) : new Date();
                 const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                // Avatar initials & color
                 const initial = (row.name || row.email || 'S')[0].toUpperCase();
                 const colors = [
                     'from-blue-500 to-indigo-600',
@@ -332,6 +445,18 @@
                     'from-amber-500 to-orange-600'
                 ];
                 const grad = colors[idx % colors.length];
+
+                const status = row.status || 'Pending';
+                let statusBadge = '';
+                if (status === 'VIP') {
+                    statusBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-purple-500/10 text-purple-400 border border-purple-500/20">🟣 VIP</span>';
+                } else if (status === 'Invited') {
+                    statusBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">🟢 Invited</span>';
+                } else if (status === 'Contacted') {
+                    statusBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20">🔵 Contacted</span>';
+                } else {
+                    statusBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20">🟡 Pending</span>';
+                }
 
                 return `
                     <tr class="hover:bg-white/[0.02] transition-colors">
@@ -351,29 +476,130 @@
                                 ${row.role || 'Member'}
                             </span>
                         </td>
-                        <td class="py-4 px-6 font-mono text-[11px] text-neutral-400">
-                            <div>${formattedDate}</div>
-                            <div class="text-neutral-600 text-[10px]">${formattedTime}</div>
+                        <td class="py-4 px-6 cursor-pointer" onclick="toggleStatus(${row.id})" title="Click to toggle status">
+                            ${statusBadge}
                         </td>
-                        <td class="py-4 px-6">
-                            <span class="text-[11px] font-mono text-neutral-500 uppercase">${row.utm_source || 'direct'}</span>
+                        <td class="py-4 px-6 font-mono text-[11px] text-neutral-400">
+                            ${formattedDate}
+                        </td>
+                        <td class="py-4 px-6 text-neutral-400 text-xs max-w-xs truncate" title="${row.notes || ''}">
+                            ${row.notes || '<span class=\"text-neutral-600 italic\">—</span>'}
                         </td>
                         <td class="py-4 px-6 text-right">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Dispatched to info@
-                            </span>
+                            <div class="flex items-center justify-end gap-2">
+                                <button onclick="openEditModal(${row.id})" class="px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-neutral-300 text-xs transition-colors">
+                                    Edit
+                                </button>
+                                <button onclick="deleteEntry(${row.id})" class="px-2.5 py-1 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs transition-colors">
+                                    Delete
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
             }).join('');
         }
 
+        // EDIT & ADD MODAL HANDLERS
+        function openEditModal(id) {
+            const entry = waitlistData.find(e => e.id === id);
+            if (!entry) return;
+
+            document.getElementById('modalTitle').innerText = "Edit Waitlist Lead";
+            document.getElementById('editEntryId').value = entry.id;
+            document.getElementById('editName').value = entry.name || '';
+            document.getElementById('editEmail').value = entry.email || '';
+            document.getElementById('editRole').value = entry.role || '';
+            document.getElementById('editStatus').value = entry.status || 'Pending';
+            document.getElementById('editNotes').value = entry.notes || '';
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = "Add New Waitlist Lead";
+            document.getElementById('editEntryId').value = "";
+            document.getElementById('editName').value = "";
+            document.getElementById('editEmail').value = "";
+            document.getElementById('editRole').value = "Founder";
+            document.getElementById('editStatus').value = "Pending";
+            document.getElementById('editNotes').value = "";
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        function handleSaveEntry(e) {
+            e.preventDefault();
+            const idVal = document.getElementById('editEntryId').value;
+            const name = document.getElementById('editName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const role = document.getElementById('editRole').value.trim();
+            const status = document.getElementById('editStatus').value;
+            const notes = document.getElementById('editNotes').value.trim();
+
+            if (idVal) {
+                // Edit existing
+                const id = parseInt(idVal, 10);
+                const entry = waitlistData.find(e => e.id === id);
+                if (entry) {
+                    entry.name = name;
+                    entry.email = email;
+                    entry.role = role;
+                    entry.status = status;
+                    entry.notes = notes;
+                }
+            } else {
+                // Add new
+                const newEntry = {
+                    id: Date.now(),
+                    name,
+                    email,
+                    role,
+                    status,
+                    notes,
+                    utm_source: 'dashboard',
+                    created_at: new Date().toISOString()
+                };
+                waitlistData.unshift(newEntry);
+            }
+
+            saveToStorage();
+            closeModal();
+            renderDashboard();
+        }
+
+        function toggleStatus(id) {
+            const entry = waitlistData.find(e => e.id === id);
+            if (!entry) return;
+            const order = ['Pending', 'Invited', 'VIP', 'Contacted'];
+            const currentIndex = order.indexOf(entry.status || 'Pending');
+            entry.status = order[(currentIndex + 1) % order.length];
+            saveToStorage();
+            renderDashboard();
+        }
+
+        function deleteEntry(id) {
+            const entry = waitlistData.find(e => e.id === id);
+            if (!entry) return;
+
+            if (confirm(`Are you sure you want to delete ${entry.name || entry.email}?\n\nNote: The front-page counter (${publicCounterValue}+) will NOT decrease.`)) {
+                waitlistData = waitlistData.filter(e => e.id !== id);
+                // Save to localStorage (public counter stays intact)
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(waitlistData));
+                renderDashboard();
+            }
+        }
+
         function exportCSV() {
-            if (!rawData.length) return;
-            const headers = ['created_at', 'name', 'email', 'role', 'utm_source'];
+            if (!waitlistData.length) return;
+            const headers = ['created_at', 'name', 'email', 'role', 'status', 'notes', 'utm_source'];
             const csvRows = [
                 headers.join(','),
-                ...rawData.map(row => headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`).join(','))
+                ...waitlistData.map(row => headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`).join(','))
             ];
             const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
@@ -383,7 +609,7 @@
             a.click();
         }
 
-        // Initialize auth & data
+        // Start
         checkAuth();
     </script>
 </body>
