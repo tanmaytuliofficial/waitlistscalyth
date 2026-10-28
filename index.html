@@ -666,20 +666,20 @@
 
             let fontSize;
             if (width < 450) {
-                fontSize = Math.floor(width / 13.5);
+                fontSize = Math.floor(width / 11);
             } else if (width < 768) {
-                fontSize = Math.floor(width / 15);
+                fontSize = Math.floor(width / 13);
             } else {
-                fontSize = Math.min(Math.floor(width / 18), 58);
+                fontSize = Math.min(Math.floor(width / 16), 56);
             }
 
             offCtx.fillStyle = '#ffffff';
-            offCtx.font = `800 ${fontSize}px 'Space Grotesk', sans-serif`;
+            offCtx.font = `800 ${fontSize}px 'Space Grotesk', -apple-system, sans-serif`;
             offCtx.textAlign = 'center';
             offCtx.textBaseline = 'middle';
 
-            const lineSpacing = fontSize * 1.4;
-            offCtx.fillText('NOW EVERYONE CAN', width / 2, height / 2 - lineSpacing / 2);
+            const lineSpacing = fontSize * 1.35;
+            offCtx.fillText('NOW PEOPLE CAN', width / 2, height / 2 - lineSpacing / 2);
             offCtx.fillText('CALL YOU LUCKY', width / 2, height / 2 + lineSpacing / 2);
 
             const imgData = offCtx.getImageData(0, 0, width, height).data;
@@ -688,7 +688,7 @@
 
             for (let y = 0; y < height; y += step) {
                 for (let x = 0; x < width; x += step) {
-                    if (imgData[(y * width + x) * 4 + 3] > 128) {
+                    if (imgData[(y * width + x) * 4 + 3] > 100) {
                         points.push({ x, y });
                     }
                 }
@@ -702,9 +702,10 @@
                 this.y = Math.random() * height;
                 this.vx = (Math.random() - 0.5) * 0.4;
                 this.vy = (Math.random() - 0.5) * 0.4;
-                this.size = Math.random() * 1.4 + 0.6;
-                this.alpha = Math.random() * 0.4 + 0.15;
+                this.size = Math.random() * 1.4 + 0.8;
+                this.alpha = 0.85;
                 this.target = null;
+                this.glow = 0;
             }
 
             update() {
@@ -749,40 +750,45 @@
                     this.vx = (this.vx + dx * springK) * damping;
                     this.vy = (this.vy + dy * springK) * damping;
 
+                    let currentGlow = (typeof this.glow === 'number' && !isNaN(this.glow)) ? this.glow : 0;
+
                     // Interactive Kinetic Hover Animation
                     if (mouse.active) {
                         const mdx = this.x - mouse.x;
                         const mdy = this.y - mouse.y;
                         const dist = Math.sqrt(mdx * mdx + mdy * mdy);
-                        const hoverRadius = width < 768 ? 90 : 130;
+                        const hoverRadius = width < 768 ? 95 : 135;
 
                         if (dist < hoverRadius && dist > 0) {
                             const force = (1 - dist / hoverRadius);
                             const repulse = force * (width < 768 ? 20 : 30);
-                            // Fluid kinetic dispersion away from cursor
                             this.vx += (mdx / dist) * repulse + (Math.random() - 0.5) * 2;
                             this.vy += (mdy / dist) * repulse + (Math.random() - 0.5) * 2;
-                            this.glow = Math.max(this.glow, force);
+                            currentGlow = Math.max(currentGlow, force);
                         }
                     }
 
                     this.x += this.vx;
                     this.y += this.vy;
 
-                    this.alpha = 0.85 + (this.glow * 0.15);
-                    this.glow *= 0.92;
+                    this.glow = currentGlow * 0.92;
+                    if (this.glow < 0.001) this.glow = 0;
+                    this.alpha = Math.min(1, Math.max(0.4, 0.85 + this.glow * 0.15));
                 }
             }
 
             draw() {
-                if (particleMode === 'luckyText' && this.glow > 0.06) {
-                    ctx.fillStyle = this.glow > 0.4
-                        ? `rgba(0, 240, 255, ${Math.min(1, this.alpha + 0.2)})`
-                        : `rgba(212, 175, 55, ${Math.min(1, this.alpha + 0.1)})`;
-                    const s = this.size + this.glow * 1.5;
+                const glowVal = (typeof this.glow === 'number' && !isNaN(this.glow)) ? this.glow : 0;
+                const a = (typeof this.alpha === 'number' && !isNaN(this.alpha)) ? this.alpha : 0.85;
+
+                if (particleMode === 'luckyText' && glowVal > 0.05) {
+                    ctx.fillStyle = glowVal > 0.35
+                        ? `rgba(0, 240, 255, ${Math.min(1, a + 0.15)})`
+                        : `rgba(212, 175, 55, ${Math.min(1, a + 0.1)})`;
+                    const s = this.size + glowVal * 1.5;
                     ctx.fillRect(this.x - s / 2, this.y - s / 2, s, s);
                 } else {
-                    ctx.fillStyle = `rgba(240, 240, 245, ${this.alpha})`;
+                    ctx.fillStyle = `rgba(240, 240, 245, ${a})`;
                     ctx.fillRect(this.x, this.y, this.size, this.size);
                 }
             }
@@ -921,10 +927,18 @@
             mainLanding.style.display = 'none';
             mainLanding.style.opacity = '0';
 
-            // Activate "NOW EVERYONE CAN CALL YOU LUCKY"
+            // Activate "NOW PEOPLE CAN CALL YOU LUCKY"
             particleMode = 'luckyText';
             luckyTargets = generateMultiLineTargets();
             assignTargets(luckyTargets);
+
+            // Clean initialization for all particles
+            particles.forEach(p => {
+                p.glow = 0;
+                p.alpha = 0.85;
+                p.vx = (Math.random() - 0.5) * 6;
+                p.vy = (Math.random() - 0.5) * 6;
+            });
 
             const luckyStage = document.getElementById('lucky-stage');
             if (luckyStage) {
