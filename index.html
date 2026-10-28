@@ -351,6 +351,24 @@
         </div>
     </div>
 
+        <!-- LUCKY CONFIRMED SCENE UI OVERLAY -->
+    <div id="lucky-stage" class="fixed inset-0 z-30 flex flex-col items-center justify-between p-8 sm:p-12 pointer-events-none opacity-0 transition-opacity duration-700 hidden select-none">
+        <div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 -ml-4"></span>
+            <span class="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Priority Queue Confirmed</span>
+        </div>
+        <div class="my-auto pointer-events-none"></div>
+        <div class="flex flex-col items-center gap-3 pointer-events-auto pb-4">
+            <p class="text-xs sm:text-sm font-light text-neutral-400 tracking-wider text-center">
+                You're in early. We will ping you before the doors open.
+            </p>
+            <button onclick="returnToLanding()" class="text-[11px] font-mono uppercase tracking-widest text-neutral-500 hover:text-white px-4 py-2 rounded-full border border-white/10 hover:border-white/20 bg-white/[0.02] transition-all">
+                ← Explore Scalyth Ecosystem
+            </button>
+        </div>
+    </div>
+
     <!-- SPLIT-SCREEN WAITLIST MODAL OVERLAY -->
     <div id="waitlist-overlay" class="fixed inset-0 z-40 flex opacity-0 pointer-events-none transition-all duration-700 bg-[#07070A]/95 backdrop-blur-2xl">
         
@@ -612,7 +630,7 @@
             luckyTargets = generateMultiLineTargets();
         }
 
-        window.addEventListener('resize', resize);
+        window.addEventListener('resize', () => { resize(); if (particleMode === 'luckyText') assignTargets(luckyTargets); else if (particleMode === 'formingScalyth') assignTargets(scalythTargets); });
 
         function generateTextTargets(text, fontSize) {
             const off = document.createElement('canvas');
@@ -646,14 +664,23 @@
             off.width = width;
             off.height = height;
 
-            const fontSize = width < 768 ? 32 : 54;
+            let fontSize;
+            if (width < 450) {
+                fontSize = Math.floor(width / 13.5);
+            } else if (width < 768) {
+                fontSize = Math.floor(width / 15);
+            } else {
+                fontSize = Math.min(Math.floor(width / 18), 58);
+            }
+
             offCtx.fillStyle = '#ffffff';
             offCtx.font = `800 ${fontSize}px 'Space Grotesk', sans-serif`;
             offCtx.textAlign = 'center';
             offCtx.textBaseline = 'middle';
 
-            offCtx.fillText('NOW PEOPLE CAN', width / 2, height / 2 - fontSize);
-            offCtx.fillText('CALL YOU LUCKY', width / 2, height / 2 + fontSize / 2);
+            const lineSpacing = fontSize * 1.4;
+            offCtx.fillText('NOW EVERYONE CAN', width / 2, height / 2 - lineSpacing / 2);
+            offCtx.fillText('CALL YOU LUCKY', width / 2, height / 2 + lineSpacing / 2);
 
             const imgData = offCtx.getImageData(0, 0, width, height).data;
             const points = [];
@@ -813,6 +840,30 @@
             overlay.classList.add('pointer-events-none');
             spamToast.classList.remove('show');
 
+            // CRITICAL: Do NOT show main landing ("Start scaling with scalyth...")
+            mainLanding.style.display = 'none';
+            mainLanding.style.opacity = '0';
+
+            // Activate "NOW EVERYONE CAN CALL YOU LUCKY"
+            particleMode = 'luckyText';
+            luckyTargets = generateMultiLineTargets();
+            assignTargets(luckyTargets);
+
+            const luckyStage = document.getElementById('lucky-stage');
+            if (luckyStage) {
+                luckyStage.classList.remove('hidden');
+                setTimeout(() => {
+                    luckyStage.style.opacity = '1';
+                }, 50);
+            }
+        }
+
+        function returnToLanding() {
+            const luckyStage = document.getElementById('lucky-stage');
+            if (luckyStage) {
+                luckyStage.style.opacity = '0';
+                setTimeout(() => luckyStage.classList.add('hidden'), 500);
+            }
             particleMode = 'ambient';
             mainLanding.style.display = 'flex';
             setTimeout(() => {
@@ -972,6 +1023,7 @@
 
                 particleMode = 'luckyText';
                 assignTargets(luckyTargets);
+                setTimeout(() => { closeWaitlist(); }, 2400);
             }, 800);
         }
 
