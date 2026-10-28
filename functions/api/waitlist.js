@@ -150,16 +150,19 @@ export async function onRequestPost(context) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'Scalyth <onboarding@resend.dev>',
-            to: ['scalyth@gmail.com'],
+            from: 'Scalyth <welcome@scalyth.tech>',
+            to: ['scalyth@gmail.com', 'info@scalyth.tech'],
             subject: `🚀 New Scalyth Waitlist Lead: ${name} (${role}) [${trackingId}]`,
             html: `
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Role:</strong> ${role}</p>
-              <p><strong>Source:</strong> ${utm_source}</p>
-              <p><strong>Time:</strong> ${timestamp}</p>
-              <p><strong>Tracking ID:</strong> ${trackingId}</p>
+              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0A0A0F; color: #EDEDED; padding: 24px; border-radius: 14px;">
+                <h2 style="color: #34D399; margin: 0 0 12px;">🚀 New Scalyth Waitlist Lead</h2>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #60A5FA;">${email}</a></p>
+                <p><strong>Role:</strong> ${role}</p>
+                <p><strong>Traffic Source:</strong> ${utm_source}</p>
+                <p><strong>Time:</strong> ${timestamp}</p>
+                <p><strong>Tracking ID:</strong> <code>${trackingId}</code></p>
+              </div>
             `,
           }),
         }).catch(() => {});
