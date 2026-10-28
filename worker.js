@@ -67,6 +67,22 @@ export default {
               _template: 'table',
               _captcha: 'false',
               _cc: 'info@scalyth.tech',
+              email: email,
+              _replyto: email,
+              _autoresponse: `Hey ${name || 'Founder'},
+
+Welcome to the Scalyth Private Waitlist! ⚡
+
+You have officially secured your early access spot in our Genesis cohort.
+
+Status: Active • VIP Queue
+Role: ${role || 'Member'}
+
+Now everyone can call you lucky. We will reach out personally with your private activation key before public rollout.
+
+Cheers,
+The Scalyth Team
+https://scalyth.tech`,
               'Full Name': name || 'Anonymous',
               'User Email': email,
               'Role': role || 'Member',

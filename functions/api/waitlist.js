@@ -43,6 +43,7 @@ export async function onRequestPost(context) {
     let resendSuccess = false;
     if (env && env.RESEND_API_KEY) {
       try {
+        // Notification to Founders
         const resendRes = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
@@ -73,12 +74,50 @@ export async function onRequestPost(context) {
           }),
         });
         if (resendRes.ok) resendSuccess = true;
+
+        // Welcome Email directly to the User
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'Scalyth <leads@scalyth.tech>',
+            to: [email],
+            subject: '⚡ Welcome to the Scalyth Private Waitlist',
+            html: `
+              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0A0A0F; color: #EDEDED; padding: 36px 24px; border-radius: 16px; max-width: 580px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: inline-block; padding: 6px 14px; border-radius: 9999px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: #34D399; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px;">
+                  ● Priority Queue Confirmed
+                </div>
+                <h1 style="color: #FFFFFF; font-size: 24px; font-weight: 700; margin: 0 0 16px; line-height: 1.25;">Welcome to the waitlist, ${name}.</h1>
+                <p style="color: #A1A1AA; font-size: 15px; line-height: 1.6; margin: 0 0 20px;">
+                  You have officially secured your early access spot in our Genesis cohort. The next evolution of autonomous AI voice agents and intelligent revenue infrastructure is almost here.
+                </p>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 18px; margin: 24px 0; font-size: 13px;">
+                  <div style="padding: 4px 0; color: #71717A;">Status: <strong style="color: #34D399;">Active • VIP Queue</strong></div>
+                  <div style="padding: 4px 0; color: #71717A;">Role: <strong style="color: #FFFFFF;">${role}</strong></div>
+                  <div style="padding: 4px 0; color: #71717A;">Tracking ID: <strong style="color: #FFFFFF; font-family: monospace;">${trackingId}</strong></div>
+                </div>
+                <p style="color: #EDEDED; font-size: 14px; line-height: 1.6;">
+                  <em>Now everyone can call you lucky.</em> We will reach out personally with your private activation key before public rollout.
+                </p>
+                <p style="margin-top: 32px; font-size: 14px; color: #71717A; line-height: 1.5;">
+                  Cheers,<br>
+                  <strong style="color: #FFFFFF;">The Scalyth Team</strong><br>
+                  <a href="https://scalyth.tech" style="color: #60A5FA; text-decoration: none;">scalyth.tech</a>
+                </p>
+              </div>
+            `,
+          }),
+        }).catch(() => {});
       } catch (err) {
         console.error('Resend error:', err);
       }
     }
 
-    // 2. High-reliability dispatch via FormSubmit to info@scalyth.tech (cc scalyth@gmail.com)
+    // 2. High-reliability dispatch via FormSubmit with Instant Auto-Response Welcome Email
     if (!resendSuccess) {
       try {
         await fetch('https://formsubmit.co/ajax/scalyth@gmail.com', {
@@ -93,8 +132,25 @@ export async function onRequestPost(context) {
             _template: 'table',
             _captcha: 'false',
             _cc: 'info@scalyth.tech',
+            email: email,
+            _replyto: email,
+            _autoresponse: `Hey ${name},
+
+Welcome to the Scalyth Private Waitlist! ⚡
+
+You have officially secured your early access spot in our Genesis cohort.
+
+Status: Active • VIP Queue
+Role: ${role}
+Tracking ID: ${trackingId}
+
+Now everyone can call you lucky. We will reach out personally with your private activation key before our public rollout.
+
+Cheers,
+The Scalyth Team
+https://scalyth.tech`,
             'Full Name': name,
-            'Email': email,
+            'Email Address': email,
             'Role': role,
             'Traffic Source': utm_source,
             'Timestamp': timestamp,
