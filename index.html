@@ -168,6 +168,22 @@
             width: 0px;
             background: transparent;
         }
+
+        /* Visible sleek scrollbar for role dropdown */
+        .role-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .role-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 9999px;
+        }
+        .role-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+        }
+        .role-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
     </style>
 </head>
 <body class="relative min-h-screen">
@@ -508,27 +524,43 @@
                     <!-- STEP 3: Role Question -->
                     <div class="chat-msg hidden" id="step-3-q">
                         <p class="text-lg sm:text-xl font-heading font-bold text-white mb-3">
-                            What is your professional role? (e.g. Founder, Engineer, Operator)
+                            What is your professional role?
                         </p>
                         <div class="relative flex flex-col items-start gap-4 w-full">
                             <div class="relative flex items-center border-b border-white/20 focus-within:border-white transition-colors pb-1 w-full">
                                 <input 
                                     type="text" 
                                     id="chat-role" 
-                                    class="chat-input w-full bg-transparent border-none outline-none text-base sm:text-lg py-2 text-white placeholder-neutral-500 transition-colors" 
-                                    placeholder="Your role" 
-                                    autocomplete="organization-title"
+                                    class="chat-input w-full bg-transparent border-none outline-none text-base sm:text-lg py-2 text-white placeholder-neutral-500 transition-colors pr-2" 
+                                    placeholder="Search or select your role..." 
+                                    autocomplete="off"
                                 >
+                                <button 
+                                    type="button" 
+                                    id="role-dropdown-toggle" 
+                                    tabindex="-1"
+                                    class="p-2 text-neutral-400 hover:text-white transition-colors focus:outline-none cursor-pointer"
+                                    title="Browse roles"
+                                >
+                                    <svg id="role-chevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
                                 <button 
                                     type="button" 
                                     id="btn-next-role" 
                                     onclick="proceedRoleStep()" 
-                                    class="ml-3 px-4 py-1.5 sm:py-2 rounded-full bg-white text-black font-heading font-bold text-xs uppercase tracking-wider hover:bg-neutral-200 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95"
+                                    class="ml-2 sm:ml-3 px-4 py-1.5 sm:py-2 rounded-full bg-white text-black font-heading font-bold text-xs uppercase tracking-wider hover:bg-neutral-200 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95"
                                 >
                                     <span>Submit</span>
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </button>
                             </div>
+
+                            <!-- Searchable Dropdown List -->
+                            <div 
+                                id="role-dropdown-menu" 
+                                class="hidden absolute top-[52px] left-0 right-0 z-50 bg-[#0c0e14]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-2xl max-h-56 overflow-y-auto py-1 text-sm role-scrollbar"
+                            ></div>
+
                             <!-- Hidden honeypot field for bot mitigation -->
                             <input type="text" id="chat-hp" name="hp" style="display:none;" tabindex="-1" autocomplete="off">
                             
@@ -1093,7 +1125,331 @@
             }, 350);
         }
 
+        // ==========================================
+        // COMPREHENSIVE GLOBAL ROLES DATASET
+        // ==========================================
+        const ROLE_CATEGORIES = [
+            {
+                name: "Leadership & Founders",
+                roles: [
+                    "Founder / Co-Founder",
+                    "Chief Executive Officer (CEO)",
+                    "Chief Technology Officer (CTO)",
+                    "Chief Operating Officer (COO)",
+                    "Chief Marketing Officer (CMO)",
+                    "Chief Financial Officer (CFO)",
+                    "Chief Revenue Officer (CRO)",
+                    "Managing Director / Partner",
+                    "Vice President (VP)",
+                    "Director / Department Head"
+                ]
+            },
+            {
+                name: "Engineering & Technology",
+                roles: [
+                    "Software Engineer",
+                    "Senior Software Engineer",
+                    "Full Stack Engineer",
+                    "Frontend Engineer",
+                    "Backend Engineer",
+                    "AI / Machine Learning Engineer",
+                    "Data Scientist / ML Researcher",
+                    "DevOps / SRE / Platform Engineer",
+                    "Cloud Architect",
+                    "Data Engineer",
+                    "Mobile Developer (iOS / Android)",
+                    "Cybersecurity / InfoSec Engineer",
+                    "QA / Test Automation Engineer",
+                    "Embedded Systems Engineer",
+                    "Blockchain / Web3 Engineer"
+                ]
+            },
+            {
+                name: "Product & Project Management",
+                roles: [
+                    "Product Manager",
+                    "Senior Product Manager",
+                    "Head of Product / VP Product",
+                    "Technical Product Manager",
+                    "Project / Program Manager",
+                    "Scrum Master / Agile Coach",
+                    "Chief of Staff"
+                ]
+            },
+            {
+                name: "Design & Creative",
+                roles: [
+                    "UI/UX Designer",
+                    "Product Designer",
+                    "Head of Design / Creative Director",
+                    "Graphic / Visual Designer",
+                    "Motion & 3D Designer",
+                    "UX Researcher",
+                    "Brand & Identity Designer"
+                ]
+            },
+            {
+                name: "Marketing & Growth",
+                roles: [
+                    "Growth Lead / Growth Marketer",
+                    "Marketing Director / VP Marketing",
+                    "Performance Marketer / Media Buyer",
+                    "SEO / SEM Specialist",
+                    "Content Strategist / Copywriter",
+                    "Social Media & Community Lead",
+                    "Public Relations (PR) Specialist",
+                    "Lifecycle & Email Marketer"
+                ]
+            },
+            {
+                name: "Sales & Revenue",
+                roles: [
+                    "Account Executive (AE)",
+                    "Sales Development Rep (SDR / BDR)",
+                    "VP of Sales / Head of Sales",
+                    "Business Development Lead",
+                    "Customer Success Manager (CSM)",
+                    "Revenue Operations (RevOps)",
+                    "Client Solutions Architect"
+                ]
+            },
+            {
+                name: "Operations & HR",
+                roles: [
+                    "Operations Manager / Director",
+                    "BizOps & Strategy Lead",
+                    "Supply Chain & Logistics Manager",
+                    "People Ops / HR Director",
+                    "Technical Recruiter / Talent Acquisition"
+                ]
+            },
+            {
+                name: "Finance, Banking & Legal",
+                roles: [
+                    "Finance Director / Head of Finance",
+                    "Financial Analyst",
+                    "Accountant / CPA / Controller",
+                    "Investment Banker",
+                    "Venture Capitalist (VC) / Angel",
+                    "Private Equity Associate / Partner",
+                    "Corporate Lawyer / Legal Counsel",
+                    "Risk & Compliance Officer"
+                ]
+            },
+            {
+                name: "Agencies & Consulting",
+                roles: [
+                    "Agency Owner / Agency Founder",
+                    "Management / Strategy Consultant",
+                    "IT / Technology Consultant",
+                    "Freelance Specialist / Independent Operator"
+                ]
+            },
+            {
+                name: "Healthcare, Biotech & Sciences",
+                roles: [
+                    "Doctor / Physician / Medical Specialist",
+                    "Healthcare Executive / Administrator",
+                    "Biotech / Pharmaceutical Researcher",
+                    "Clinical Scientist / Bioinformatician"
+                ]
+            },
+            {
+                name: "Education, Academia & Research",
+                roles: [
+                    "Professor / Academic Researcher",
+                    "Educator / Instructor",
+                    "Student / Graduate Researcher"
+                ]
+            },
+            {
+                name: "Real Estate & Architecture",
+                roles: [
+                    "Real Estate Developer / Investor",
+                    "Architect / Urban Designer",
+                    "Civil / Structural Engineer"
+                ]
+            },
+            {
+                name: "E-Commerce, Retail & Creator",
+                roles: [
+                    "E-Commerce / DTC Brand Founder",
+                    "Digital Creator / Producer",
+                    "Small Business Owner / Operator",
+                    "Solopreneur / Indie Hacker"
+                ]
+            }
+        ];
+
+        const roleDropdownMenu = document.getElementById('role-dropdown-menu');
+        const roleDropdownToggle = document.getElementById('role-dropdown-toggle');
+        const roleChevron = document.getElementById('role-chevron');
+        let selectedRoleIndex = -1;
+        let isRoleDropdownOpen = false;
+
+        function escapeRoleHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, (m) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[m]));
+        }
+
+        function renderRoleOptions(filterText = '') {
+            if (!roleDropdownMenu) return;
+            selectedRoleIndex = -1;
+            const query = (filterText || '').toLowerCase().trim();
+            let html = '';
+
+            // Dynamic custom write-in fallback if query doesn't match an exact role
+            if (query.length > 0) {
+                let exactMatchFound = false;
+                for (const cat of ROLE_CATEGORIES) {
+                    if (cat.roles.some(r => r.toLowerCase() === query)) {
+                        exactMatchFound = true;
+                        break;
+                    }
+                }
+                if (!exactMatchFound) {
+                    html += `
+                        <div 
+                            class="role-opt-item px-3.5 py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border-b border-white/10 transition-colors flex items-center justify-between cursor-pointer group"
+                            data-role="${escapeRoleHtml(filterText.trim())}"
+                        >
+                            <span class="truncate text-xs sm:text-sm">Use custom: <strong>"${escapeRoleHtml(filterText.trim())}"</strong></span>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 uppercase tracking-wider shrink-0 ml-2">Custom</span>
+                        </div>
+                    `;
+                }
+            }
+
+            let totalMatches = 0;
+            ROLE_CATEGORIES.forEach(cat => {
+                const matching = cat.roles.filter(r => {
+                    if (!query) return true;
+                    return r.toLowerCase().includes(query) || cat.name.toLowerCase().includes(query);
+                });
+
+                if (matching.length > 0) {
+                    totalMatches += matching.length;
+                    html += `
+                        <div class="px-3.5 py-1.5 text-[10px] font-mono uppercase tracking-wider text-neutral-400 bg-white/[0.04] font-semibold sticky top-0 backdrop-blur-md border-b border-white/5">
+                            ${cat.name}
+                        </div>
+                    `;
+                    matching.forEach(r => {
+                        const isSelected = (roleInput.value.trim().toLowerCase() === r.toLowerCase());
+                        const activeClass = isSelected ? 'bg-white/15 text-white font-semibold' : 'text-neutral-300 hover:bg-white/10 hover:text-white';
+                        html += `
+                            <div 
+                                class="role-opt-item px-3.5 py-2 text-xs sm:text-sm transition-colors cursor-pointer flex items-center justify-between ${activeClass}"
+                                data-role="${escapeRoleHtml(r)}"
+                            >
+                                <span class="truncate">${r}</span>
+                                ${isSelected ? '<span class="text-xs text-emerald-400 font-bold ml-2">✓</span>' : ''}
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            if (totalMatches === 0 && query.length > 0 && !html) {
+                html = `<div class="px-3.5 py-3 text-xs text-neutral-500 text-center">No matching roles found. Press Enter to use typed value.</div>`;
+            }
+
+            roleDropdownMenu.innerHTML = html;
+        }
+
+        function openRoleDropdown() {
+            if (!roleDropdownMenu) return;
+            renderRoleOptions(roleInput.value.trim());
+            roleDropdownMenu.classList.remove('hidden');
+            if (roleChevron) roleChevron.classList.add('rotate-180');
+            isRoleDropdownOpen = true;
+        }
+
+        function closeRoleDropdown() {
+            if (!roleDropdownMenu) return;
+            roleDropdownMenu.classList.add('hidden');
+            if (roleChevron) roleChevron.classList.remove('rotate-180');
+            isRoleDropdownOpen = false;
+            selectedRoleIndex = -1;
+        }
+
+        function toggleRoleDropdown(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            if (isRoleDropdownOpen) {
+                closeRoleDropdown();
+            } else {
+                openRoleDropdown();
+                roleInput.focus();
+            }
+        }
+
+        function selectRole(roleName) {
+            if (!roleName) return;
+            roleInput.value = roleName;
+            closeRoleDropdown();
+            roleInput.focus();
+        }
+
+        function highlightItem(items, index) {
+            items.forEach((item, i) => {
+                if (i === index) {
+                    item.classList.add('bg-white/20', 'text-white');
+                    item.scrollIntoView({ block: 'nearest' });
+                } else {
+                    item.classList.remove('bg-white/20');
+                }
+            });
+        }
+
+        if (roleDropdownMenu) {
+            // Prevent input blur before click registers
+            roleDropdownMenu.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+            });
+            roleDropdownMenu.addEventListener('click', (e) => {
+                const opt = e.target.closest('.role-opt-item');
+                if (opt) {
+                    const roleVal = opt.getAttribute('data-role');
+                    if (roleVal) {
+                        selectRole(roleVal);
+                    }
+                }
+            });
+        }
+
+        if (roleDropdownToggle) {
+            roleDropdownToggle.addEventListener('click', toggleRoleDropdown);
+        }
+
+        roleInput.addEventListener('focus', () => {
+            openRoleDropdown();
+        });
+
+        roleInput.addEventListener('input', () => {
+            openRoleDropdown();
+        });
+
+        document.addEventListener('click', (e) => {
+            const step3 = document.getElementById('step-3-q');
+            if (step3 && !step3.contains(e.target)) {
+                closeRoleDropdown();
+            }
+        });
+
         function proceedRoleStep() {
+            closeRoleDropdown();
+            const toggle = document.getElementById('role-dropdown-toggle');
+            if (toggle) toggle.classList.add('hidden');
+
             const val = roleInput.value.trim();
             userRole = val || 'Member';
             roleInput.disabled = true;
@@ -1122,9 +1478,39 @@
         });
 
         roleInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.keyCode === 13) {
+            const items = roleDropdownMenu ? roleDropdownMenu.querySelectorAll('.role-opt-item') : [];
+
+            if (e.key === 'ArrowDown') {
                 e.preventDefault();
+                if (!isRoleDropdownOpen) {
+                    openRoleDropdown();
+                    return;
+                }
+                if (items.length > 0) {
+                    selectedRoleIndex = (selectedRoleIndex + 1) % items.length;
+                    highlightItem(items, selectedRoleIndex);
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (!isRoleDropdownOpen) {
+                    openRoleDropdown();
+                    return;
+                }
+                if (items.length > 0) {
+                    selectedRoleIndex = (selectedRoleIndex - 1 + items.length) % items.length;
+                    highlightItem(items, selectedRoleIndex);
+                }
+            } else if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+                if (isRoleDropdownOpen && selectedRoleIndex >= 0 && items[selectedRoleIndex]) {
+                    const roleVal = items[selectedRoleIndex].getAttribute('data-role');
+                    if (roleVal) {
+                        selectRole(roleVal);
+                    }
+                }
                 proceedRoleStep();
+            } else if (e.key === 'Escape') {
+                closeRoleDropdown();
             }
         });
 
