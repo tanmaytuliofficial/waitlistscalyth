@@ -109,76 +109,197 @@ export async function onRequestPost(context) {
 
     const apiKey = getApiKey(env);
 
-    // 4. Send Welcome Email to the User via Resend
+    // 4. Send Welcome Email to the User via Resend (Ultra-Luxury Brand Template)
     let welcomeSent = false;
     if (apiKey) {
       const welcomeHtml = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Welcome to Scalyth</title>
-        </head>
-        <body style="margin: 0; padding: 32px 16px; background-color: #07070A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #EDEDED;">
-          <div style="max-width: 580px; margin: 0 auto; background: #111218; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
-            
-            <!-- Scalyth Brand Pill -->
-            <div style="display: inline-block; padding: 6px 14px; border-radius: 9999px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: #34D399; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">
-              ● Priority Queue Confirmed
-            </div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Scalyth — Genesis Access Pass</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #060609; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #EDEDED; -webkit-font-smoothing: antialiased;">
+  
+  <!-- Outer Full-Canvas Table -->
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#060609" style="background-color: #060609; table-layout: fixed;">
+    <tr>
+      <td align="center" style="padding: 40px 16px 50px;">
+        
+        <!-- Main Card Container -->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; background: #0E0F16; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; overflow: hidden; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);">
+          
+          <!-- Cyber Neon Top Accent Stripe -->
+          <tr>
+            <td height="4" style="background: linear-gradient(90deg, #10B981 0%, #38BDF8 50%, #818CF8 100%); line-height: 4px; font-size: 4px;">&nbsp;</td>
+          </tr>
 
-            <h1 style="color: #FFFFFF; font-size: 26px; font-weight: 700; margin: 0 0 16px; line-height: 1.25; letter-spacing: -0.02em;">
-              Welcome to the waitlist, ${safeName}.
-            </h1>
-
-            <p style="color: #A1A1AA; font-size: 15px; line-height: 1.6; margin: 0 0 20px;">
-              You have officially secured your spot in our Genesis access cohort. Scalyth is building the autonomous intelligence layer for modern business — eliminating bottlenecks and automating revenue workflows.
-            </p>
-
-            <!-- Verification Queue Box -->
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 20px; margin: 28px 0;">
-              <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <!-- Inner Content Padding -->
+          <tr>
+            <td style="padding: 36px 32px 40px;">
+              
+              <!-- Top Brand Bar -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 32px;">
                 <tr>
-                  <td style="padding: 6px 0; color: #71717A; width: 120px;">Status:</td>
-                  <td style="color: #34D399; font-weight: 600;">Active • Priority VIP</td>
-                </tr>
-                <tr>
-                  <td style="padding: 6px 0; color: #71717A;">Registered Email:</td>
-                  <td style="color: #FFFFFF; font-weight: 500;">${safeEmail}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 6px 0; color: #71717A;">Role:</td>
-                  <td style="color: #FFFFFF; font-weight: 500;">${safeRole}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 6px 0; color: #71717A;">Queue ID:</td>
-                  <td style="color: #E4E4E7; font-family: ui-monospace, Menlo, monospace;">${trackingId}</td>
+                  <td align="left" style="vertical-align: middle;">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="36" height="36" align="center" bgcolor="#FFFFFF" style="border-radius: 9px; vertical-align: middle;">
+                          <span style="font-family: -apple-system, BlinkMacSystemFont, 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 900; color: #000000; line-height: 1;">S</span>
+                        </td>
+                        <td style="padding-left: 12px; vertical-align: middle;">
+                          <span style="font-size: 15px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #FFFFFF;">SCALYTH</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td align="right" style="vertical-align: middle;">
+                    <span style="display: inline-block; padding: 6px 14px; border-radius: 9999px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(52, 211, 153, 0.3); color: #34D399; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-family: ui-monospace, Menlo, monospace;">
+                      ● Genesis Cohort
+                    </span>
+                  </td>
                 </tr>
               </table>
-            </div>
 
-            <p style="color: #F4F4F5; font-size: 14px; line-height: 1.6; margin: 0 0 24px;">
-              <em>Now everyone can call you lucky.</em> We are rolling out private access in waves. When your cohort opens, you will receive a direct invitation link.
-            </p>
+              <!-- Hero Greeting -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px;">
+                <tr>
+                  <td>
+                    <div style="font-size: 11px; font-family: ui-monospace, Menlo, monospace; color: #71717A; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px;">
+                      PRIORITY ADMISSION // WAVE 01
+                    </div>
+                    <h1 style="color: #FFFFFF; font-size: 28px; font-weight: 800; margin: 0 0 16px; line-height: 1.25; letter-spacing: -0.02em;">
+                      Welcome to the waitlist, ${safeName}.
+                    </h1>
+                    <p style="color: #A1A1AA; font-size: 15px; line-height: 1.65; margin: 0;">
+                      You have officially locked your priority spot in our Genesis cohort. Scalyth is engineering the autonomous intelligence layer for modern business — eliminating operational drag, answering queries at 0-latency, and orchestrating revenue workflows without human bottleneck.
+                    </p>
+                  </td>
+                </tr>
+              </table>
 
-            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 13px; color: #71717A; line-height: 1.6;">
-              Cheers,<br>
-              <strong style="color: #FFFFFF;">The Scalyth Team</strong><br>
-              <a href="https://scalyth.tech" style="color: #60A5FA; text-decoration: none;">scalyth.tech</a>
-            </div>
+              <!-- VIP ACCESS PASS CARD -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: #141520; border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 16px; margin: 28px 0; overflow: hidden;">
+                <tr>
+                  <td style="padding: 22px 24px;">
+                    
+                    <!-- Card Top Header -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 14px; margin-bottom: 16px;">
+                      <tr>
+                        <td align="left">
+                          <span style="font-family: ui-monospace, Menlo, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #71717A;">
+                            VIP ACCESS PASS
+                          </span>
+                        </td>
+                        <td align="right">
+                          <span style="color: #34D399; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">
+                            STATUS: ACTIVE
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
 
-            <!-- Transparency & Unsubscribe Notice -->
-            <div style="margin-top: 20px; font-size: 11px; color: #52525B; line-height: 1.5; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 16px;">
-              You received this transactional update because you registered on the Scalyth waitlist at waitlist.scalyth.tech. If you wish to withdraw consent or request complete erasure of your record, reply directly or email <a href="mailto:info@scalyth.tech?subject=Waitlist%20Erasure%20Request" style="color: #71717A;">info@scalyth.tech</a>.
-            </div>
-          </div>
-          
-          <div style="max-width: 580px; margin: 24px auto 0; text-align: center; font-size: 12px; color: #52525B;">
-            © 2026 Scalyth. All rights reserved.
-          </div>
-        </body>
-        </html>
+                    <!-- Meta Rows Table -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 13px;">
+                      <tr>
+                        <td width="130" style="padding: 7px 0; color: #71717A;">Queue Ticket ID:</td>
+                        <td style="padding: 7px 0;">
+                          <span style="display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 600; color: #34D399; background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.25); padding: 3px 10px; border-radius: 6px; letter-spacing: 0.05em;">
+                            ${trackingId}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 7px 0; color: #71717A;">Registered Email:</td>
+                        <td style="padding: 7px 0; color: #FFFFFF; font-weight: 600;">
+                          ${safeEmail}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 7px 0; color: #71717A;">Member Role:</td>
+                        <td style="padding: 7px 0; color: #FFFFFF; font-weight: 500;">
+                          ${safeRole}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 7px 0; color: #71717A;">Allocation Wave:</td>
+                        <td style="padding: 7px 0; color: #38BDF8; font-weight: 600;">
+                          Alpha Cohort (Founding Access)
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Brand Feature Quote Box -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-left: 3px solid #38BDF8; background: rgba(56, 189, 248, 0.04); border-radius: 0 12px 12px 0; margin: 24px 0;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <p style="margin: 0 0 6px; font-size: 15px; font-weight: 700; color: #FFFFFF; font-style: italic;">
+                      &ldquo;Now everyone can call you lucky.&rdquo;
+                    </p>
+                    <p style="margin: 0; font-size: 13px; color: #9CA3AF; line-height: 1.55;">
+                      Private access is rolling out in sequential waves. Before public doors open, you will receive a direct invitation key and founder walkthrough link.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Call To Action Button -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin: 32px 0 28px;">
+                <tr>
+                  <td align="center">
+                    <a href="https://waitlist.scalyth.tech" target="_blank" style="display: inline-block; background-color: #FFFFFF; color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 36px; border-radius: 9999px; text-decoration: none; box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);">
+                      Visit Scalyth Waitlist &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Sign-off Block -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 24px; margin-top: 20px;">
+                <tr>
+                  <td>
+                    <p style="margin: 0 0 4px; font-size: 13px; color: #71717A;">Cheers,</p>
+                    <p style="margin: 0 0 2px; font-size: 14px; font-weight: 700; color: #FFFFFF;">Tanmay Tuli &amp; The Scalyth Team</p>
+                    <p style="margin: 0; font-size: 12px; color: #71717A;">
+                      Autonomous Business Intelligence &bull; <a href="https://scalyth.tech" style="color: #60A5FA; text-decoration: none;">scalyth.tech</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Unsubscribe & DPDPA Transparency Note -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 28px; border-top: 1px solid rgba(255, 255, 255, 0.04); padding-top: 18px;">
+                <tr>
+                  <td style="font-size: 11px; color: #52525B; line-height: 1.6;">
+                    You received this email because you registered on the Scalyth waitlist at <a href="https://waitlist.scalyth.tech" style="color: #71717A; text-decoration: none;">waitlist.scalyth.tech</a>. If you wish to withdraw consent or request complete erasure of your record under the Digital Personal Data Protection Act, reply directly to this email or contact <a href="mailto:info@scalyth.tech?subject=Waitlist%20Erasure%20Request" style="color: #71717A;">info@scalyth.tech</a>.
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+        <!-- Sub-Footer -->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; margin-top: 20px;">
+          <tr>
+            <td align="center" style="font-size: 12px; color: #52525B;">
+              &copy; 2026 Scalyth Systems. All rights reserved.
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
       `;
 
       // Helper function to send email via Resend
@@ -192,7 +313,7 @@ export async function onRequestPost(context) {
           body: JSON.stringify({
             from: fromAddress,
             to: Array.isArray(toAddress) ? toAddress : [toAddress],
-            subject: '⚡ Welcome to the Scalyth Private Waitlist',
+            subject: '⚡ Scalyth Genesis VIP Pass — Spot Confirmed',
             html: welcomeHtml,
           }),
         });

@@ -669,11 +669,11 @@
 
             let fontSize;
             if (width < 450) {
-                fontSize = Math.floor(width / 11);
+                fontSize = Math.floor(width / 10.5);
             } else if (width < 768) {
-                fontSize = Math.floor(width / 13);
+                fontSize = Math.floor(width / 12.5);
             } else {
-                fontSize = Math.min(Math.floor(width / 16), 56);
+                fontSize = Math.min(Math.floor(width / 15), 58);
             }
 
             offCtx.fillStyle = '#ffffff';
@@ -681,13 +681,13 @@
             offCtx.textAlign = 'center';
             offCtx.textBaseline = 'middle';
 
-            const lineSpacing = fontSize * 1.35;
+            const lineSpacing = fontSize * 1.38;
             offCtx.fillText('NOW PEOPLE CAN', width / 2, height / 2 - lineSpacing / 2);
             offCtx.fillText('CALL YOU LUCKY', width / 2, height / 2 + lineSpacing / 2);
 
             const imgData = offCtx.getImageData(0, 0, width, height).data;
             const points = [];
-            const step = width < 768 ? 3 : 4;
+            const step = width < 768 ? 3 : 3;
 
             for (let y = 0; y < height; y += step) {
                 for (let x = 0; x < width; x += step) {
@@ -703,10 +703,10 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.35;
-                this.vy = (Math.random() - 0.5) * 0.35;
-                this.size = Math.random() * 1.1 + 0.6;
-                this.alpha = 0.55;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.size = Math.random() * 1.3 + 0.8;
+                this.alpha = 0.85;
                 this.target = null;
                 this.glow = 0;
             }
@@ -799,8 +799,8 @@
 
         function initParticles() {
             particles = [];
-            // Reduced particle density for minimal, luxury background dots
-            const count = window.innerWidth < 768 ? 160 : 420;
+            // Full particle pool so SCALYTH and NOW PEOPLE CAN CALL YOU LUCKY are 100% complete and bright
+            const count = window.innerWidth < 768 ? 950 : 2200;
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
@@ -816,10 +816,16 @@
             ctx.fillStyle = 'rgba(7, 7, 10, 0.25)';
             ctx.fillRect(0, 0, width, height);
 
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            // Behind the hook landing page: only show subtle, sparse background dots (~120 desktop / ~50 mobile)
+            // When forming SCALYTH or NOW PEOPLE CAN CALL YOU LUCKY: animate all dense particles!
+            const activeCount = particleMode === 'ambient'
+                ? (width < 768 ? 50 : 120)
+                : particles.length;
+
+            for (let i = 0; i < activeCount; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
 
             // Connective laser aura on hover in lucky text mode
             if (particleMode === 'luckyText' && mouse.active) {
