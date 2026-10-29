@@ -237,12 +237,6 @@
                     <span id="rotating-word" class="word-flip text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-100 to-neutral-400 border-b-2 border-white/20 pb-1">intelligence.</span>
                 </h1>
 
-                <!-- Dynamic Problem Ticker (Catalyst Style) -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-2 py-2 px-4 rounded-full bg-white/[0.03] border border-white/5 text-xs sm:text-sm text-neutral-300 mb-8 max-w-xl">
-                    <span class="text-neutral-500 font-mono uppercase text-[10px] sm:text-[11px] tracking-wider shrink-0">Most businesses:</span>
-                    <span id="problem-ticker" class="ticker-fade text-neutral-200 font-medium truncate">lose high-intent leads to delayed follow-ups.</span>
-                </div>
-
                 <!-- Subheading / Value Proposition -->
                 <p class="text-sm sm:text-base md:text-lg text-mutedText max-w-2xl font-light leading-relaxed mb-10">
                     Scalyth is the autonomous intelligence layer for modern business — identifying operational bottlenecks in real time and orchestrating revenue workflows without the chaos.
@@ -280,54 +274,280 @@
             </div>
         </section>
 
-        <!-- 3 VALUE PILLARS (Catalyst Style Glanceable Feature Cards) -->
-        <section class="w-full max-w-5xl px-6 py-16 border-t border-white/[0.06]">
+        <!-- OPERATIONAL FRAGMENTATION ANALYSIS (CONNECTED ARROWS FLOW) -->
+        <section class="w-full max-w-5xl px-4 sm:px-6 pt-24 pb-8">
             <div class="text-center mb-12">
-                <p class="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-2">Architected for Speed</p>
-                <h2 class="font-heading text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                    One platform to replace fragmented operations.
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-neutral-400 font-mono text-xs mb-3">
+                    <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></span>
+                    MOST BUSINESSES STRUGGLE WITH
+                </div>
+                <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">
+                    The invisible friction bleeding your pipeline.
                 </h2>
+                <p class="text-xs sm:text-sm text-neutral-400 max-w-lg mx-auto mt-2">
+                    How disconnected tools and delayed responses systematically stall qualified revenue:
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Card 1 -->
-                <div class="glass-pill p-6 sm:p-8 rounded-3xl relative overflow-hidden group hover:border-white/20 transition-all">
-                    <div class="text-xs font-mono text-neutral-500 mb-4">01 / DIAGNOSIS</div>
-                    <h3 class="font-heading text-lg font-bold text-white mb-2">Automated Revenue Audit</h3>
-                    <p class="text-xs sm:text-sm text-mutedText leading-relaxed">
-                        Connect your stack in minutes. Scalyth maps friction points, lead drop-offs, and operational waste automatically.
-                    </p>
+            <!-- 4 Connected Nodes with Directional Pulse Arrows -->
+            <div class="flex flex-col md:flex-row items-stretch justify-between gap-3 relative">
+                
+                <!-- Node 1 -->
+                <div class="flex-1 glass-pill p-5 rounded-2xl relative border border-white/10 hover:border-rose-500/30 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[10px] font-mono text-rose-400 font-semibold mb-1 tracking-wider">01 // RESPONSE LAG</div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Delayed Follow-ups</h3>
+                        <p class="text-xs text-neutral-400 leading-relaxed">
+                            High-intent leads wait hours for manual callbacks, losing conversion momentum.
+                        </p>
+                    </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="glass-pill p-6 sm:p-8 rounded-3xl relative overflow-hidden group hover:border-white/20 transition-all">
-                    <div class="text-xs font-mono text-neutral-500 mb-4">02 / AUTONOMY</div>
-                    <h3 class="font-heading text-lg font-bold text-white mb-2">Voice & Agent Intelligence</h3>
-                    <p class="text-xs sm:text-sm text-mutedText leading-relaxed">
-                        Deploy intelligent agents that answer queries on the 1st ring, book qualifying calls, and close support loops 24/7.
-                    </p>
+                <!-- Arrow 1 -> 2 -->
+                <div class="flex items-center justify-center py-1 md:py-0 text-neutral-500 shrink-0">
+                    <div class="hidden md:flex items-center text-neutral-500 font-mono text-lg animate-pulse px-1">→</div>
+                    <div class="flex md:hidden items-center text-neutral-500 font-mono text-lg animate-bounce py-1">↓</div>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="glass-pill p-6 sm:p-8 rounded-3xl relative overflow-hidden group hover:border-white/20 transition-all">
-                    <div class="text-xs font-mono text-neutral-500 mb-4">03 / EXECUTION</div>
-                    <h3 class="font-heading text-lg font-bold text-white mb-2">Predictive Action Engine</h3>
-                    <p class="text-xs sm:text-sm text-mutedText leading-relaxed">
-                        No more guessing metrics. Get high-confidence tactical plays and automated workflows tailored to your pipeline.
-                    </p>
+                <!-- Node 2 -->
+                <div class="flex-1 glass-pill p-5 rounded-2xl relative border border-white/10 hover:border-amber-500/30 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[10px] font-mono text-amber-400 font-semibold mb-1 tracking-wider">02 // TOOL SPRAWL</div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">15+ Isolated Tools</h3>
+                        <p class="text-xs text-neutral-400 leading-relaxed">
+                            Fragmented SaaS apps trapping critical customer context across separate silos.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Arrow 2 -> 3 -->
+                <div class="flex items-center justify-center py-1 md:py-0 text-neutral-500 shrink-0">
+                    <div class="hidden md:flex items-center text-neutral-500 font-mono text-lg animate-pulse px-1">→</div>
+                    <div class="flex md:hidden items-center text-neutral-500 font-mono text-lg animate-bounce py-1">↓</div>
+                </div>
+
+                <!-- Node 3 -->
+                <div class="flex-1 glass-pill p-5 rounded-2xl relative border border-white/10 hover:border-amber-500/30 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[10px] font-mono text-amber-400 font-semibold mb-1 tracking-wider">03 // MANUAL DRAIN</div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">30+ Hours Admin</h3>
+                        <p class="text-xs text-neutral-400 leading-relaxed">
+                            Operators burn critical weekly hours manually updating CRM records and following up.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Arrow 3 -> 4 -->
+                <div class="flex items-center justify-center py-1 md:py-0 text-neutral-500 shrink-0">
+                    <div class="hidden md:flex items-center text-neutral-500 font-mono text-lg animate-pulse px-1">→</div>
+                    <div class="flex md:hidden items-center text-neutral-500 font-mono text-lg animate-bounce py-1">↓</div>
+                </div>
+
+                <!-- Node 4 -->
+                <div class="flex-1 glass-pill p-5 rounded-2xl relative border border-white/10 hover:border-rose-500/30 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[10px] font-mono text-rose-400 font-semibold mb-1 tracking-wider">04 // REVENUE LEAK</div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Silent Blindspots</h3>
+                        <p class="text-xs text-neutral-400 leading-relaxed">
+                            Zero real-time visibility into where qualified pipeline drops off until month-end.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Downward Convergence Flow Connector -->
+            <div class="flex flex-col items-center justify-center pt-10 pb-2">
+                <div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-mono shadow-[0_0_20px_rgba(16,185,129,0.18)]">
+                    <span>↓</span> CONVERGED &amp; RESOLVED BY SCALYTH <span>↓</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- S C A L Y T H FROSTED BLURRED GALLERY SECTION -->
+        <section class="w-full max-w-7xl px-4 sm:px-6 py-12 border-t border-white/[0.06]">
+            <div class="text-center mb-12">
+                <p class="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-2">Architected for Speed</p>
+                <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">
+                    One platform to replace fragmented operations.
+                </h2>
+                <p class="text-xs sm:text-sm text-neutral-400 max-w-lg mx-auto mt-2">
+                    Seven autonomous intelligence pillars engineered into one unified business nervous system.
+                </p>
+            </div>
+
+            <!-- Gallery Track (7 Frosted Blurred Cards) -->
+            <div class="w-full overflow-x-auto pb-8 pt-2 scrollbar-none snap-x snap-mandatory">
+                <div class="flex lg:grid lg:grid-cols-7 gap-3.5 sm:gap-4 min-w-[1200px] lg:min-w-0">
+                    
+                    <!-- CARD S -->
+                    <div class="flex-1 min-w-[200px] lg:min-w-0 rounded-2xl p-5 relative overflow-hidden group hover:border-white/30 transition-all duration-300 flex flex-col justify-between" style="background: rgba(14, 15, 23, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-neutral-500">01 // CORE</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            </div>
+                            <div class="font-heading font-black text-6xl text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-white/10 select-none tracking-tighter mb-2">
+                                S
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide uppercase font-heading mb-1">Synapse</h3>
+                            <p class="text-[11px] text-neutral-400 leading-relaxed">
+                                Unified nervous system linking every tool and database into real-time operational sync.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-4 pt-3 border-t border-white/[0.06]">
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#NeuralSync</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#RealTimeOps</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#ZeroFriction</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD C -->
+                    <div class="flex-1 min-w-[200px] lg:min-w-0 rounded-2xl p-5 relative overflow-hidden group hover:border-white/30 transition-all duration-300 flex flex-col justify-between" style="background: rgba(14, 15, 23, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-neutral-500">02 // AUDIT</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                            </div>
+                            <div class="font-heading font-black text-6xl text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-white/10 select-none tracking-tighter mb-2">
+                                C
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide uppercase font-heading mb-1">Clarity</h3>
+                            <p class="text-[11px] text-neutral-400 leading-relaxed">
+                                Automated diagnosis mapping pipeline friction points and customer drop-offs instantaneously.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-4 pt-3 border-t border-white/[0.06]">
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#BottleneckAudit</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#SignalExtract</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#ZeroLeakage</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD A -->
+                    <div class="flex-1 min-w-[200px] lg:min-w-0 rounded-2xl p-5 relative overflow-hidden group hover:border-white/30 transition-all duration-300 flex flex-col justify-between" style="background: rgba(14, 15, 23, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-neutral-500">03 // AGENTS</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            </div>
+                            <div class="font-heading font-black text-6xl text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-white/10 select-none tracking-tighter mb-2">
+                                A
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide uppercase font-heading mb-1">Autonomy</h3>
+                            <p class="text-[11px] text-neutral-400 leading-relaxed">
+                                Intelligent voice and chat agents that qualify prospects and resolve inquiries 24/7.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-4 pt-3 border-t border-white/[0.06]">
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#AgenticVoice</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#SelfHealing</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#24x7Dispatch</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD L -->
+                    <div class="flex-1 min-w-[200px] lg:min-w-0 rounded-2xl p-5 relative overflow-hidden group hover:border-white/30 transition-all duration-300 flex flex-col justify-between" style="background: rgba(14, 15, 23, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-neutral-500">04 // LOGIC</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                            </div>
+                            <div class="font-heading font-black text-6xl text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-white/10 select-none tracking-tighter mb-2">
+                                L
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide uppercase font-heading mb-1">Logic</h3>
+                            <p class="text-[11px] text-neutral-400 leading-relaxed">
+                                Sub-millisecond decision trees executing proactive plays tailored to pipeline stage.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-4 pt-3 border-t border-white/[0.06]">
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#DecisionRules</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#ActionEngine</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#ZeroLag</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD Y -->
+                    <div class="flex-1 min-w-[200px] lg:min-w-0 rounded-2xl p-5 relative overflow-hidden group hover:border-white/30 transition-all duration-300 flex flex-col justify-between" style="background: rgba(14, 15, 23, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-neutral-500">05 // YIELD</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                            </div>
+                            <div class="font-heading font-black text-6xl text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-white/10 select-none tracking-tighter mb-2">
+                                Y
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide uppercase font-heading mb-1">Yield</h3>
+                            <p class="text-[11px] text-neutral-400 leading-relaxed">
+                                Maximizing margin and revenue conversion velocity from your existing customer demand.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-4 pt-3 border-t border-white/[0.06]">
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#RevenueVelocity</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#PipelineLift</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#ConversionMax</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD T -->
+                    <div class="flex-1 min-w-[200px] lg:min-w-0 rounded-2xl p-5 relative overflow-hidden group hover:border-white/30 transition-all duration-300 flex flex-col justify-between" style="background: rgba(14, 15, 23, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-neutral-500">06 // VOICE</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                            </div>
+                            <div class="font-heading font-black text-6xl text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-white/10 select-none tracking-tighter mb-2">
+                                T
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide uppercase font-heading mb-1">Telephony</h3>
+                            <p class="text-[11px] text-neutral-400 leading-relaxed">
+                                Autonomous voice system picking up on the 1st ring with natural low-latency conversation.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-4 pt-3 border-t border-white/[0.06]">
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#FirstRingPickup</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#ZeroHoldTime</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#VoiceIntelligence</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD H -->
+                    <div class="flex-1 min-w-[200px] lg:min-w-0 rounded-2xl p-5 relative overflow-hidden group hover:border-white/30 transition-all duration-300 flex flex-col justify-between" style="background: rgba(14, 15, 23, 0.65); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-neutral-500">07 // SCALE</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            </div>
+                            <div class="font-heading font-black text-6xl text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-200 to-white/10 select-none tracking-tighter mb-2">
+                                H
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide uppercase font-heading mb-1">Hyper-Scale</h3>
+                            <p class="text-[11px] text-neutral-400 leading-relaxed">
+                                Complete operational stack consolidation enabling hands-off scaling without team bloat.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-4 pt-3 border-t border-white/[0.06]">
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#ConsolidatedStack</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#HandsOffOps</span>
+                            <span class="text-[9px] font-mono text-neutral-400 bg-white/[0.04] px-1.5 py-0.5 rounded">#AutonomousGrowth</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
             <!-- Bottom Teaser Bar -->
-            <div class="mt-16 glass-pill p-8 rounded-3xl text-center flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="mt-14 glass-pill p-8 rounded-3xl text-center flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div class="text-left">
-                    <h4 class="font-heading font-bold text-white text-base sm:text-lg">Ready to experience business intelligence without the BS?</h4>
-                    <p class="text-xs sm:text-sm text-mutedText">Early cohorts receive lifetime founder terms & custom agent rollout.</p>
+                    <h4 class="font-heading font-bold text-white text-base sm:text-lg">Ready to experience autonomous business intelligence?</h4>
+                    <p class="text-xs sm:text-sm text-mutedText">Early access cohorts receive priority onboarding and founding terms.</p>
                 </div>
                 <button onclick="startAwakeningSequence()" class="bg-white text-black hover:bg-neutral-200 text-xs font-heading font-bold uppercase tracking-wider px-6 py-3.5 rounded-full transition-all shrink-0 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                    Claim Your Spot →
+                    Request Early Access →
                 </button>
             </div>
+        </section>
         </section>
 
         <!-- FOOTER -->
@@ -518,24 +738,7 @@
             }, 300);
         }, 2400);
 
-        const problems = [
-            "lose high-intent leads to delayed follow-ups.",
-            "drown in 15 disconnected SaaS tools.",
-            "guess what's actually bleeding revenue.",
-            "burn countless hours on manual operations.",
-            "fly blind without real-time intelligence."
-        ];
-        let problemIndex = 0;
-        const tickerEl = document.getElementById("problem-ticker");
-
-        setInterval(() => {
-            tickerEl.classList.add("changing");
-            setTimeout(() => {
-                problemIndex = (problemIndex + 1) % problems.length;
-                tickerEl.innerText = problems[problemIndex];
-                tickerEl.classList.remove("changing");
-            }, 300);
-        }, 3000);
+        // Rotating word keeps headline dynamic
 
 
         /* ----------------------------------------------------
