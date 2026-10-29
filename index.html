@@ -388,238 +388,180 @@
                 </p>
             </div>
 
-            <!-- Tab Pills for Fast Switch (Matching Image 3 / ServicesOverview) -->
-            <div class="flex items-center justify-center gap-2 mb-10 overflow-x-auto no-scrollbar py-1 relative z-10">
-                <button id="service-tab-0" onclick="setCarouselCard(0)" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-semibold tracking-tight transition-all duration-200 shrink-0 bg-white text-black shadow-md scale-105 cursor-pointer">
-                    VOICE AGENTS
-                </button>
-                <button id="service-tab-1" onclick="setCarouselCard(1)" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-medium tracking-tight transition-all duration-200 shrink-0 bg-white/[0.03] text-neutral-400 border border-white/[0.08] hover:border-white/20 hover:text-white cursor-pointer">
-                    PERFORMANCE WEBSITES
-                </button>
-                <button id="service-tab-2" onclick="setCarouselCard(2)" class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-medium tracking-tight transition-all duration-200 shrink-0 bg-white/[0.03] text-neutral-400 border border-white/[0.08] hover:border-white/20 hover:text-white cursor-pointer">
-                    WORKFLOW AUTOMATION
-                </button>
-            </div>
-
             <!-- 3D Card Deck with Peeking Blurred Side Cards -->
-            <div id="services-carousel-deck" class="relative h-[530px] sm:h-[500px] max-w-4xl mx-auto flex items-center justify-center relative z-10 select-none">
+            <div id="services-carousel-deck" class="relative h-[480px] sm:h-[470px] max-w-4xl mx-auto flex items-center justify-center relative z-10 select-none">
                 
-                <!-- CARD 0: VOICE AGENTS -->
-                <div id="service-card-0" onclick="setCarouselCard(0)" class="carousel-card-item absolute w-[calc(100vw-36px)] max-w-[420px] sm:max-w-[480px] h-[490px] sm:h-[470px] rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.85)] cursor-pointer backdrop-blur-xl border border-emerald-500/35 transition-all duration-500" style="background: linear-gradient(180deg, rgba(6, 78, 59, 0.4) 0%, rgba(17, 19, 25, 0.95) 45%, rgba(12, 14, 18, 0.98) 100%);">
-                    <!-- Top Row -->
-                    <div class="flex items-center justify-between">
-                        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-emerald-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                <!-- CARD 0: FRAGMENTED OPERATIONS (SILOS & TOOLS) -->
+                <div id="service-card-0" onclick="setCarouselCard(0)" class="carousel-card-item absolute w-[calc(100vw-36px)] max-w-[420px] sm:max-w-[480px] h-[440px] sm:h-[450px] rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.85)] cursor-pointer backdrop-blur-xl border border-emerald-500/35 transition-all duration-500" style="background: linear-gradient(180deg, rgba(6, 78, 59, 0.45) 0%, rgba(17, 19, 25, 0.95) 45%, rgba(12, 14, 18, 0.98) 100%);">
+                    <!-- Top Minimal Status Bar -->
+                    <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="text-[10px] sm:text-[11px] font-mono tracking-widest text-neutral-400 uppercase">FRAGMENTED OPERATIONS // AUDIT</span>
                         </div>
-                        <span class="text-[10px] font-mono tracking-widest px-3 py-1 rounded-full uppercase bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold">
-                            VOICE AGENTS
+                        <span class="text-[10px] font-mono tracking-widest px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/10 text-neutral-400">
+                            01 / 03
                         </span>
                     </div>
 
-                    <!-- Hook Headline -->
-                    <div class="pt-2">
-                        <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-                            Picks up faster than your ex replies.
-                        </h3>
-                        <p class="mt-1 text-xs text-neutral-300 leading-relaxed line-clamp-2">
-                            Zero hold music. Zero missed revenue. Our AI receptionist answers in 1 second, talks like a real human, and books appointments 24/7.
-                        </p>
-                    </div>
-
-                    <!-- S-C-A-L-Y-T-H Frosted Blurred Matrix -->
-                    <div class="my-auto py-2.5 px-3.5 sm:px-4 rounded-xl bg-black/55 border border-white/[0.08] backdrop-blur-md relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent pointer-events-none"></div>
-                        <div class="space-y-1 relative z-10 font-mono">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(52,211,153,0.4)] shrink-0">S</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">peed To Lead (&lt;1s Dispatch)</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(52,211,153,0.4)] shrink-0">C</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">all Qualification Pipeline</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(52,211,153,0.4)] shrink-0">A</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">utonomous Voice Reception</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(52,211,153,0.4)] shrink-0">L</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ive Calendar Synchronization</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(52,211,153,0.4)] shrink-0">Y</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ield Retention &amp; Recovery</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(52,211,153,0.4)] shrink-0">T</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">elephony Neural Switchboard</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(52,211,153,0.4)] shrink-0">H</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">uman-Grade Audio Synthesis</span>
-                            </div>
+                    <!-- 7 Fragmented Operations Words (S-C-A-L-Y-T-H Highlight Spine) -->
+                    <div class="my-auto py-2 space-y-2 font-mono">
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(52,211,153,0.5)] shrink-0">S</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">preadsheet &amp; Data Silos</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(52,211,153,0.5)] shrink-0">C</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">RM &amp; Pipeline Fragmentation</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(52,211,153,0.5)] shrink-0">A</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">sync Communication Lag</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(52,211,153,0.5)] shrink-0">L</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ead Leakage &amp; Slow Replies</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(52,211,153,0.5)] shrink-0">Y</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ield Loss Across Funnels</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(52,211,153,0.5)] shrink-0">T</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ool Sprawl &amp; Manual Dispatch</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-emerald-400/20 border border-emerald-400/50 text-emerald-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(52,211,153,0.5)] shrink-0">H</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">uman Handoff Bottlenecks</span>
                         </div>
                     </div>
 
-                    <!-- Bottom Metrics Row -->
-                    <div class="pt-3.5 border-t border-white/[0.08] flex items-end justify-between">
-                        <div>
-                            <span class="text-[9px] font-mono uppercase tracking-wider text-neutral-400 font-semibold block">AVG ANSWER SPEED</span>
-                            <span class="text-lg sm:text-xl font-black text-white tracking-tight font-mono">&lt; 1 sec</span>
+                    <!-- Bottom Resolution Bar -->
+                    <div class="pt-3 border-t border-white/[0.06] flex items-center justify-between">
+                        <div class="flex items-center gap-2 font-mono">
+                            <span class="text-[9px] text-neutral-500 uppercase tracking-wider">RESOLVED BY:</span>
+                            <span class="text-xs font-bold text-emerald-400 tracking-wider">SCALYTH CORE</span>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <span onclick="event.stopPropagation(); startAwakeningSequence()" class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
-                                <span>Details</span>
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                            </span>
-                            <span class="text-xs font-mono text-neutral-400 font-bold">01/03</span>
-                        </div>
+                        <span onclick="event.stopPropagation(); startAwakeningSequence()" class="text-xs font-mono text-neutral-400 hover:text-white flex items-center gap-1 transition-colors cursor-pointer">
+                            <span>Request Access</span>
+                            <span>↗</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- CARD 1: PERFORMANCE WEBSITES -->
-                <div id="service-card-1" onclick="setCarouselCard(1)" class="carousel-card-item absolute w-[calc(100vw-36px)] max-w-[420px] sm:max-w-[480px] h-[490px] sm:h-[470px] rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.85)] cursor-pointer backdrop-blur-xl border border-white/[0.08] transition-all duration-500" style="background: #111319;">
-                    <!-- Top Row -->
-                    <div class="flex items-center justify-between">
-                        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-blue-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                <!-- CARD 1: INBOUND & PIPELINE FRICTION -->
+                <div id="service-card-1" onclick="setCarouselCard(1)" class="carousel-card-item absolute w-[calc(100vw-36px)] max-w-[420px] sm:max-w-[480px] h-[440px] sm:h-[450px] rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.85)] cursor-pointer backdrop-blur-xl border border-white/[0.08] transition-all duration-500" style="background: #111319;">
+                    <!-- Top Minimal Status Bar -->
+                    <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                            <span class="text-[10px] sm:text-[11px] font-mono tracking-widest text-neutral-400 uppercase">INBOUND &amp; PIPELINE // AUDIT</span>
                         </div>
-                        <span class="text-[10px] font-mono tracking-widest px-3 py-1 rounded-full uppercase bg-blue-500/10 border border-blue-500/20 text-blue-400 font-semibold">
-                            PERFORMANCE WEBSITES
+                        <span class="text-[10px] font-mono tracking-widest px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/10 text-neutral-400">
+                            02 / 03
                         </span>
                     </div>
 
-                    <!-- Hook Headline -->
-                    <div class="pt-2">
-                        <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-                            Websites that actually print money.
-                        </h3>
-                        <p class="mt-1 text-xs text-neutral-300 leading-relaxed line-clamp-2">
-                            Sub-second load times, clean aesthetics, and zero fluff. Engineered so cold visitors become paying clients before they bounce.
-                        </p>
-                    </div>
-
-                    <!-- S-C-A-L-Y-T-H Frosted Blurred Matrix -->
-                    <div class="my-auto py-2.5 px-3.5 sm:px-4 rounded-xl bg-black/55 border border-white/[0.08] backdrop-blur-md relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-transparent pointer-events-none"></div>
-                        <div class="space-y-1 relative z-10 font-mono">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(96,165,250,0.4)] shrink-0">S</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">calability Infrastructure</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(96,165,250,0.4)] shrink-0">C</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">onversion Rate Friction Eraser</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(96,165,250,0.4)] shrink-0">A</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">cquisition Journey Routing</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(96,165,250,0.4)] shrink-0">L</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">atency-Free Client Interfaces</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(96,165,250,0.4)] shrink-0">Y</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ield Multiplier Landing Pages</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(96,165,250,0.4)] shrink-0">T</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">raffic Monetization Framework</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(96,165,250,0.4)] shrink-0">H</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">igh-Velocity Pipeline Gate</span>
-                            </div>
+                    <!-- 7 Fragmented Operations Words (S-C-A-L-Y-T-H Highlight Spine) -->
+                    <div class="my-auto py-2 space-y-2 font-mono">
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(96,165,250,0.5)] shrink-0">S</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">peed-To-Lead Delays</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(96,165,250,0.5)] shrink-0">C</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">all Drop-Offs &amp; Missed Inbounds</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(96,165,250,0.5)] shrink-0">A</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">fter-Hours Response Void</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(96,165,250,0.5)] shrink-0">L</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ost Prospects &amp; Ghosting</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(96,165,250,0.5)] shrink-0">Y</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">esterday's Manual Voicemails</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(96,165,250,0.5)] shrink-0">T</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">elephone Queues &amp; Hold Lag</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-blue-400/20 border border-blue-400/50 text-blue-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(96,165,250,0.5)] shrink-0">H</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">eavy Manual Follow-Up Drain</span>
                         </div>
                     </div>
 
-                    <!-- Bottom Metrics Row -->
-                    <div class="pt-3.5 border-t border-white/[0.08] flex items-end justify-between">
-                        <div>
-                            <span class="text-[9px] font-mono uppercase tracking-wider text-neutral-400 font-semibold block">AVG BOUNCE RATE</span>
-                            <span class="text-lg sm:text-xl font-black text-white tracking-tight font-mono">-64%</span>
+                    <!-- Bottom Resolution Bar -->
+                    <div class="pt-3 border-t border-white/[0.06] flex items-center justify-between">
+                        <div class="flex items-center gap-2 font-mono">
+                            <span class="text-[9px] text-neutral-500 uppercase tracking-wider">RESOLVED BY:</span>
+                            <span class="text-xs font-bold text-blue-400 tracking-wider">AUTONOMOUS DISPATCH</span>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <span onclick="event.stopPropagation(); startAwakeningSequence()" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-                                <span>Details</span>
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                            </span>
-                            <span class="text-xs font-mono text-neutral-400 font-bold">02/03</span>
-                        </div>
+                        <span onclick="event.stopPropagation(); startAwakeningSequence()" class="text-xs font-mono text-neutral-400 hover:text-white flex items-center gap-1 transition-colors cursor-pointer">
+                            <span>Request Access</span>
+                            <span>↗</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- CARD 2: WORKFLOW AUTOMATION -->
-                <div id="service-card-2" onclick="setCarouselCard(2)" class="carousel-card-item absolute w-[calc(100vw-36px)] max-w-[420px] sm:max-w-[480px] h-[490px] sm:h-[470px] rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.85)] cursor-pointer backdrop-blur-xl border border-white/[0.08] transition-all duration-500" style="background: #111319;">
-                    <!-- Top Row -->
-                    <div class="flex items-center justify-between">
-                        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-amber-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <!-- CARD 2: BACK-OFFICE & WORKFLOW CHAOS -->
+                <div id="service-card-2" onclick="setCarouselCard(2)" class="carousel-card-item absolute w-[calc(100vw-36px)] max-w-[420px] sm:max-w-[480px] h-[440px] sm:h-[450px] rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.85)] cursor-pointer backdrop-blur-xl border border-white/[0.08] transition-all duration-500" style="background: #111319;">
+                    <!-- Top Minimal Status Bar -->
+                    <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span class="text-[10px] sm:text-[11px] font-mono tracking-widest text-neutral-400 uppercase">BACK-OFFICE &amp; WORKFLOW // AUDIT</span>
                         </div>
-                        <span class="text-[10px] font-mono tracking-widest px-3 py-1 rounded-full uppercase bg-amber-500/10 border border-amber-500/20 text-amber-400 font-semibold">
-                            WORKFLOW AUTOMATION
+                        <span class="text-[10px] font-mono tracking-widest px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/10 text-neutral-400">
+                            03 / 03
                         </span>
                     </div>
 
-                    <!-- Hook Headline -->
-                    <div class="pt-2">
-                        <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-                            Your back-office on autopilot.
-                        </h3>
-                        <p class="mt-1 text-xs text-neutral-300 leading-relaxed line-clamp-2">
-                            Connect your calls, CRM, calendar, and alerts. When a client books, contracts dispatch, invoices generate, and Slack pings automatically.
-                        </p>
-                    </div>
-
-                    <!-- S-C-A-L-Y-T-H Frosted Blurred Matrix -->
-                    <div class="my-auto py-2.5 px-3.5 sm:px-4 rounded-xl bg-black/55 border border-white/[0.08] backdrop-blur-md relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
-                        <div class="space-y-1 relative z-10 font-mono">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.4)] shrink-0">S</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ystem Nervous Integration</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.4)] shrink-0">C</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ross-Platform Sync Engine</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.4)] shrink-0">A</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">uto-Dispatch Action Trees</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.4)] shrink-0">L</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ead Status Orchestration</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.4)] shrink-0">Y</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ear-Round Zero-Downtime</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.4)] shrink-0">T</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">rigger-Action Microservices</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-5 h-5 rounded bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-[10px] shadow-[0_0_10px_rgba(251,191,36,0.4)] shrink-0">H</span>
-                                <span class="text-neutral-400/70 text-[10px] sm:text-[11px] tracking-wider blur-[0.7px] uppercase truncate">ands-Off Revenue Operations</span>
-                            </div>
+                    <!-- 7 Fragmented Operations Words (S-C-A-L-Y-T-H Highlight Spine) -->
+                    <div class="my-auto py-2 space-y-2 font-mono">
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(251,191,36,0.5)] shrink-0">S</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ystem Disconnects &amp; Isolation</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(251,191,36,0.5)] shrink-0">C</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ustomer Context Lost In Transit</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(251,191,36,0.5)] shrink-0">A</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">dmin Overload &amp; Copy-Paste</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(251,191,36,0.5)] shrink-0">L</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ag In Cross-Tool Sync</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(251,191,36,0.5)] shrink-0">Y</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">ear-Round Process Debt</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(251,191,36,0.5)] shrink-0">T</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">rigger Failures &amp; Broken Zaps</span>
+                        </div>
+                        <div class="flex items-center gap-3 group/row">
+                            <span class="w-7 h-7 sm:w-8 sm:h-7 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-bold flex items-center justify-center text-xs shadow-[0_0_12px_rgba(251,191,36,0.5)] shrink-0">H</span>
+                            <span class="text-neutral-400/70 text-xs sm:text-[13px] tracking-wider uppercase blur-[0.8px] group-hover/row:blur-[0.2px] group-hover/row:text-neutral-200 transition-all select-none truncate">eadcount Bloat &amp; Overhead</span>
                         </div>
                     </div>
 
-                    <!-- Bottom Metrics Row -->
-                    <div class="pt-3.5 border-t border-white/[0.08] flex items-end justify-between">
-                        <div>
-                            <span class="text-[9px] font-mono uppercase tracking-wider text-neutral-400 font-semibold block">HOURS SAVED / WEEK</span>
-                            <span class="text-lg sm:text-xl font-black text-white tracking-tight font-mono">20+ hrs/wk</span>
+                    <!-- Bottom Resolution Bar -->
+                    <div class="pt-3 border-t border-white/[0.06] flex items-center justify-between">
+                        <div class="flex items-center gap-2 font-mono">
+                            <span class="text-[9px] text-neutral-500 uppercase tracking-wider">RESOLVED BY:</span>
+                            <span class="text-xs font-bold text-amber-400 tracking-wider">UNIFIED OPERATING SYSTEM</span>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <span onclick="event.stopPropagation(); startAwakeningSequence()" class="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors">
-                                <span>Details</span>
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                            </span>
-                            <span class="text-xs font-mono text-neutral-400 font-bold">03/03</span>
-                        </div>
+                        <span onclick="event.stopPropagation(); startAwakeningSequence()" class="text-xs font-mono text-neutral-400 hover:text-white flex items-center gap-1 transition-colors cursor-pointer">
+                            <span>Request Access</span>
+                            <span>↗</span>
+                        </span>
                     </div>
                 </div>
 
