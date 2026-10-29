@@ -346,10 +346,10 @@
     <!-- AWAKENING HUD CONTAINER (Shows while SCALYTH particle text assembles) -->
     <div id="awakening-hud" class="fixed inset-0 z-30 pointer-events-none flex flex-col justify-between items-center p-8 opacity-0 transition-opacity duration-500">
         <div class="font-mono text-[10px] tracking-[0.3em] uppercase text-neutral-500">
-            [ INITIALIZING SCALYTH NEURAL PROTOCOL ]
+            [ INITIALIZING SCALYTH NETWORK ]
         </div>
         <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-neutral-400 animate-pulse">
-            ASSEMBLING GENESIS CORE...
+            CONNECTING SECURE PROTOCOL...
         </div>
     </div>
 
@@ -358,15 +358,15 @@
         <div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span class="w-2 h-2 rounded-full bg-emerald-400 -ml-4"></span>
-            <span class="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Priority Queue Confirmed</span>
+            <span class="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Early Access Requested</span>
         </div>
         <div class="my-auto pointer-events-none"></div>
         <div class="flex flex-col items-center gap-3 pointer-events-auto pb-4">
             <p class="text-xs sm:text-sm font-light text-neutral-400 tracking-wider text-center">
-                You're in early. We will ping you before the doors open.
+                Thank you for registering. We will notify you when early access is ready.
             </p>
             <button onclick="returnToLanding()" class="text-[11px] font-mono uppercase tracking-widest text-neutral-500 hover:text-white px-4 py-2 rounded-full border border-white/10 hover:border-white/20 bg-white/[0.02] transition-all">
-                ← Explore Scalyth Ecosystem
+                ← Return to Homepage
             </button>
         </div>
     </div>
@@ -388,17 +388,17 @@
                 
                 <div class="relative z-10 max-w-lg">
                     <p class="text-[10px] sm:text-xs font-mono tracking-[0.25em] text-neutral-400 uppercase mb-4 font-semibold">
-                        No Gatekeeping. Want In?
+                        Early Access
                     </p>
                     <h2 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold tracking-tighter leading-[1.0] mb-6 uppercase text-white drop-shadow-md">
                         BUSINESS<br>
                         INTELLIGENCE,<br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-neutral-100 via-neutral-300 to-neutral-600">
-                            WITHOUT<br>THE BS.
+                            WITHOUT<br>THE FRICTION.
                         </span>
                     </h2>
                     <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed max-w-sm">
-                        We're cooking up something insane in public. Drop your details on the right and we'll hit you up as soon as the doors open.
+                        Scalyth automates revenue workflows and eliminates operational bottlenecks. Enter your details to request early access.
                     </p>
                 </div>
             </div>
@@ -411,14 +411,14 @@
                     <!-- STEP 1: Name Question -->
                     <div class="chat-msg active" id="step-1-q">
                         <p class="text-lg sm:text-xl font-heading font-bold text-white mb-3">
-                            Ayo. What should we call you?
+                            What should we call you?
                         </p>
                         <div class="relative">
                             <input 
                                 type="text" 
                                 id="chat-name" 
                                 class="chat-input w-full bg-transparent border-b border-white/20 text-base sm:text-lg py-2.5 text-white placeholder-neutral-500 transition-colors" 
-                                placeholder="Type your name and hit Enter →" 
+                                placeholder="Your name →" 
                                 autocomplete="off"
                             >
                         </div>
@@ -427,14 +427,14 @@
                     <!-- STEP 2: Email Question -->
                     <div class="chat-msg hidden" id="step-2-q">
                         <p class="text-lg sm:text-xl font-heading font-bold text-white mb-3">
-                            Main character energy, <span id="display-name" class="text-neutral-300 underline underline-offset-4 decoration-white/40"></span>. Where should we drop the invite?
+                            Where should we send your invitation, <span id="display-name" class="text-neutral-300 underline underline-offset-4 decoration-white/40"></span>?
                         </p>
                         <div class="relative">
                             <input 
                                 type="email" 
                                 id="chat-email" 
                                 class="chat-input w-full bg-transparent border-b border-white/20 text-base sm:text-lg py-2.5 text-white placeholder-neutral-500 transition-colors" 
-                                placeholder="your@email.com →" 
+                                placeholder="work@company.com →" 
                                 autocomplete="off"
                             >
                         </div>
@@ -443,14 +443,14 @@
                     <!-- STEP 3: Role Question -->
                     <div class="chat-msg hidden" id="step-3-q">
                         <p class="text-lg sm:text-xl font-heading font-bold text-white mb-3">
-                            Bet. Last thing—what's your role? (Founder, dev, etc.)
+                            What is your professional role? (e.g. Founder, Engineer, Operator)
                         </p>
                         <div class="relative flex flex-col items-start gap-4">
                             <input 
                                 type="text" 
                                 id="chat-role" 
                                 class="chat-input w-full bg-transparent border-b border-white/20 text-base sm:text-lg py-2.5 text-white placeholder-neutral-500 transition-colors" 
-                                placeholder="Type role and hit Enter →" 
+                                placeholder="Your role →" 
                                 autocomplete="off"
                             >
                             <!-- Hidden honeypot field for bot mitigation -->
@@ -461,7 +461,7 @@
                                 onclick="handleFinalSubmit()"
                                 class="hidden mt-4 bg-white text-black font-heading font-bold uppercase tracking-widest text-xs px-7 py-3.5 rounded-full hover:bg-neutral-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.35)] hover:scale-105"
                             >
-                                Get me in
+                                Request Early Access
                             </button>
 
                             <p class="text-[11px] text-neutral-500 font-light mt-2">
@@ -473,13 +473,13 @@
                     <!-- STEP FINAL: Success Message -->
                     <div class="chat-msg hidden" id="step-final">
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono mb-3">
-                            <span>✓</span> SPOT SECURED
+                            <span>✓</span> REQUEST CONFIRMED
                         </div>
                         <p class="text-2xl sm:text-3xl font-heading font-bold text-white mb-2">
-                            Say less. You're on the list.
+                            You are on the early access list.
                         </p>
-                        <p class="text-sm text-neutral-400 font-light">
-                            Details forwarded to <span class="text-white font-mono">info@scalyth.tech</span>. Keep an eye out for private access invites in your inbox.
+                        <p class="text-sm text-neutral-400 font-light leading-relaxed">
+                            A confirmation email has been dispatched to your inbox. We will reach out as soon as early access is available for your profile.
                         </p>
                     </div>
 
@@ -1035,12 +1035,12 @@
         });
 
         async function handleFinalSubmit() {
-            submitBtn.innerText = 'SECURING SPOT...';
+            submitBtn.innerText = 'CONFIRMING REQUEST...';
             submitBtn.disabled = true;
 
-            const finalName = userName || 'Anonymous';
+            const finalName = userName || '';
             const finalEmail = userEmail || emailInput.value.trim();
-            const finalRole = userRole || roleInput.value.trim() || 'Founder';
+            const finalRole = userRole || roleInput.value.trim() || 'Member';
 
             const payload = {
                 name: finalName,
