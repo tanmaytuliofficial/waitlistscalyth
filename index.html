@@ -331,8 +331,10 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="w-full py-8 text-center text-xs text-neutral-600 font-mono border-t border-white/[0.04]">
-            © 2026 Scalyth. All rights reserved. • 
+        <footer class="w-full py-8 text-center text-xs text-neutral-600 font-mono border-t border-white/[0.04] flex items-center justify-center gap-3">
+            <span>© 2026 Scalyth. All rights reserved.</span>
+            <span>•</span>
+            <a href="/privacy.html" class="text-neutral-500 hover:text-neutral-300 underline underline-offset-4 decoration-neutral-800 transition-colors">Privacy Notice</a>
         </footer>
     </div>
 
@@ -451,6 +453,8 @@
                                 placeholder="Type role and hit Enter →" 
                                 autocomplete="off"
                             >
+                            <!-- Hidden honeypot field for bot mitigation -->
+                            <input type="text" id="chat-hp" name="hp" style="display:none;" tabindex="-1" autocomplete="off">
                             
                             <button 
                                 id="submit-btn" 
@@ -459,6 +463,10 @@
                             >
                                 Get me in
                             </button>
+
+                            <p class="text-[11px] text-neutral-500 font-light mt-2">
+                                By joining, you consent to receive waitlist notifications and invite keys from Scalyth. See our <a href="/privacy.html" target="_blank" class="text-neutral-400 hover:text-white underline">Privacy Notice</a>.
+                            </p>
                         </div>
                     </div>
 
@@ -568,12 +576,7 @@
             }, 3800);
         }
 
-        // Rotate through social proof feed every 7 seconds
-        // Show toast every 60 seconds (1 minute frequency)
-        setInterval(() => {
-            feedIndex = (feedIndex + 1) % initialMaskedFeed.length;
-            showLiveToast(initialMaskedFeed[feedIndex]);
-        }, 60000);
+        // Live toast triggered exclusively upon genuine user signup in handleFinalSubmit()
 
         // Fetch live count from API
         async function fetchLiveCount() {
@@ -700,10 +703,10 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.size = Math.random() * 1.4 + 0.8;
-                this.alpha = 0.85;
+                this.vx = (Math.random() - 0.5) * 0.35;
+                this.vy = (Math.random() - 0.5) * 0.35;
+                this.size = Math.random() * 1.1 + 0.6;
+                this.alpha = 0.55;
                 this.target = null;
                 this.glow = 0;
             }
@@ -796,7 +799,8 @@
 
         function initParticles() {
             particles = [];
-            const count = window.innerWidth < 768 ? 700 : 1800;
+            // Reduced particle density for minimal, luxury background dots
+            const count = window.innerWidth < 768 ? 160 : 420;
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
@@ -1036,48 +1040,17 @@
                 name: finalName,
                 email: finalEmail,
                 role: finalRole,
+                hp: document.getElementById('chat-hp') ? document.getElementById('chat-hp').value : '',
                 referrer: document.referrer || 'direct',
                 utm_source: new URLSearchParams(window.location.search).get('utm_source') || 'organic'
             };
 
-            // 1. Dual Email Dispatch (Edge API + Direct FormSubmit fallback)
+            // 1. Secure First-Party Dispatch via Cloudflare Edge Function
             try {
                 fetch(WAITLIST_API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
-                }).catch(() => {});
-
-                fetch('https://formsubmit.co/ajax/scalyth@gmail.com', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({
-                        _subject: `⚡ New Scalyth Waitlist Lead: ${finalName} (${finalRole})`,
-                        _template: 'table',
-                        _captcha: 'false',
-                        _cc: 'info@scalyth.tech',
-                        email: finalEmail,
-                        _replyto: finalEmail,
-                        _autoresponse: `Hey ${finalName},
-
-Welcome to the Scalyth Private Waitlist! ⚡
-
-You have officially secured your early access spot in our Genesis cohort.
-
-Status: Active • VIP Queue
-Role: ${finalRole}
-
-Now everyone can call you lucky. We will reach out personally with your private activation key before public rollout.
-
-Cheers,
-The Scalyth Team
-https://scalyth.tech`,
-                        'Full Name': finalName,
-                        'Email Address': finalEmail,
-                        'Role': finalRole,
-                        'Traffic Source': payload.utm_source,
-                        'Timestamp': new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + ' IST'
-                    })
                 }).catch(() => {});
             } catch (err) {}
 

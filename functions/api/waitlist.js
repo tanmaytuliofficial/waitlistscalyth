@@ -1,4 +1,5 @@
 // Cloudflare Pages Function: functions/api/waitlist.js
+// Production waitlist processor with DPDPA-aligned privacy controls & security safeguards
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,12 +9,53 @@ const corsHeaders = {
 
 const getApiKey = (env) => (env && env.RESEND_API_KEY) ? env.RESEND_API_KEY : atob('cmVfSlZBbkFVSktfTHkxWlhVZGlkOExLTFZCeGh0Uk1HQ2My');
 
+// HTML entity escaping to prevent email HTML injection / XSS
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// In-memory IP rate limiter for edge function instances (5 submissions per 5 min)
+const rateLimitMap = new Map();
+function checkRateLimit(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  const windowMs = 5 * 60 * 1000;
+  const maxRequests = 5;
+  const timestamps = (rateLimitMap.get(ip) || []).filter(t => now - t < windowMs);
+  if (timestamps.length >= maxRequests) {
+    return true;
+  }
+  timestamps.push(now);
+  rateLimitMap.set(ip, timestamps);
+  if (rateLimitMap.size > 500) {
+    for (const [k, v] of rateLimitMap.entries()) {
+      if (v.every(t => now - t >= windowMs)) rateLimitMap.delete(k);
+    }
+  }
+  return false;
+}
+
 export async function onRequestOptions() {
   return new Response(null, { headers: corsHeaders });
 }
 
 export async function onRequestPost(context) {
   const { request, env } = context;
+
+  // 1. IP Rate Limiting Check
+  const clientIp = request.headers.get('CF-Connecting-IP') || request.headers.get('x-forwarded-for') || 'unknown';
+  if (checkRateLimit(clientIp)) {
+    return new Response(JSON.stringify({ error: 'Too many requests. Please wait a few minutes before trying again.' }), {
+      status: 429,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': '300' },
+    });
+  }
 
   try {
     let body;
@@ -26,24 +68,48 @@ export async function onRequestPost(context) {
       });
     }
 
-    const name = (body.name || 'Anonymous').trim();
-    const email = (body.email || '').trim().toLowerCase();
-    const role = (body.role || 'Founder').trim();
-    const utm_source = (body.utm_source || 'organic').trim();
+    // 2. Honeypot check for spam bots
+    if (body.website || body.honeypot || body.hp) {
+      return new Response(JSON.stringify({ success: true, count: 16 }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
-    if (!email || !email.includes('@')) {
-      return new Response(JSON.stringify({ error: 'Valid email required' }), {
+    // 3. Strict Server-Side Input Validation & Sanitization
+    const rawName = (body.name || 'Anonymous').trim();
+    const rawEmail = (body.email || '').trim().toLowerCase();
+    const rawRole = (body.role || 'Founder').trim();
+    const rawUtm = (body.utm_source || 'organic').trim();
+
+    // Length constraints to prevent memory buffer abuse
+    if (rawName.length > 80 || rawRole.length > 60 || rawUtm.length > 60) {
+      return new Response(JSON.stringify({ error: 'Input exceeds maximum allowed length' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
+    // RFC-compliant email verification
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+    if (!rawEmail || rawEmail.length > 120 || !emailRegex.test(rawEmail)) {
+      return new Response(JSON.stringify({ error: 'Valid work or personal email address required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Sanitized values for template insertion
+    const safeName = escapeHtml(rawName);
+    const safeEmail = escapeHtml(rawEmail);
+    const safeRole = escapeHtml(rawRole);
+    const safeUtm = escapeHtml(rawUtm);
 
     const timestamp = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + ' IST';
     const trackingId = `SCL-${Date.now().toString(36).toUpperCase()}`;
 
     const apiKey = getApiKey(env);
 
-    // 1. Send Welcome Email to the User via Resend
+    // 4. Send Welcome Email to the User via Resend
     let welcomeSent = false;
     if (apiKey) {
       const welcomeHtml = `
@@ -63,7 +129,7 @@ export async function onRequestPost(context) {
             </div>
 
             <h1 style="color: #FFFFFF; font-size: 26px; font-weight: 700; margin: 0 0 16px; line-height: 1.25; letter-spacing: -0.02em;">
-              Welcome to the waitlist, ${name}.
+              Welcome to the waitlist, ${safeName}.
             </h1>
 
             <p style="color: #A1A1AA; font-size: 15px; line-height: 1.6; margin: 0 0 20px;">
@@ -79,11 +145,11 @@ export async function onRequestPost(context) {
                 </tr>
                 <tr>
                   <td style="padding: 6px 0; color: #71717A;">Registered Email:</td>
-                  <td style="color: #FFFFFF; font-weight: 500;">${email}</td>
+                  <td style="color: #FFFFFF; font-weight: 500;">${safeEmail}</td>
                 </tr>
                 <tr>
                   <td style="padding: 6px 0; color: #71717A;">Role:</td>
-                  <td style="color: #FFFFFF; font-weight: 500;">${role}</td>
+                  <td style="color: #FFFFFF; font-weight: 500;">${safeRole}</td>
                 </tr>
                 <tr>
                   <td style="padding: 6px 0; color: #71717A;">Queue ID:</td>
@@ -101,10 +167,15 @@ export async function onRequestPost(context) {
               <strong style="color: #FFFFFF;">The Scalyth Team</strong><br>
               <a href="https://scalyth.tech" style="color: #60A5FA; text-decoration: none;">scalyth.tech</a>
             </div>
+
+            <!-- Transparency & Unsubscribe Notice -->
+            <div style="margin-top: 20px; font-size: 11px; color: #52525B; line-height: 1.5; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 16px;">
+              You received this transactional update because you registered on the Scalyth waitlist at waitlist.scalyth.tech. If you wish to withdraw consent or request complete erasure of your record, reply directly or email <a href="mailto:info@scalyth.tech?subject=Waitlist%20Erasure%20Request" style="color: #71717A;">info@scalyth.tech</a>.
+            </div>
           </div>
           
           <div style="max-width: 580px; margin: 24px auto 0; text-align: center; font-size: 12px; color: #52525B;">
-            © 2026 Scalyth Systems. Autonomous Telephony & Intelligent Automations.
+            © 2026 Scalyth. All rights reserved.
           </div>
         </body>
         </html>
@@ -128,11 +199,9 @@ export async function onRequestPost(context) {
       };
 
       try {
-        // Try sending with custom domain first
-        let res = await sendViaResend('Scalyth <welcome@scalyth.tech>', email);
+        let res = await sendViaResend('Scalyth <welcome@scalyth.tech>', rawEmail);
         if (!res.ok) {
-          // Fallback to onboarding@resend.dev (works for account owner / testing)
-          res = await sendViaResend('Scalyth <onboarding@resend.dev>', email);
+          res = await sendViaResend('Scalyth <onboarding@resend.dev>', rawEmail);
         }
         if (res.ok) {
           welcomeSent = true;
@@ -141,7 +210,7 @@ export async function onRequestPost(context) {
         console.error('Welcome email error:', e);
       }
 
-      // Also send notification to founder
+      // Also send secure notification to founder
       try {
         await fetch('https://api.resend.com/emails', {
           method: 'POST',
@@ -152,14 +221,14 @@ export async function onRequestPost(context) {
           body: JSON.stringify({
             from: 'Scalyth <welcome@scalyth.tech>',
             to: ['scalyth@gmail.com', 'info@scalyth.tech'],
-            subject: `🚀 New Scalyth Waitlist Lead: ${name} (${role}) [${trackingId}]`,
+            subject: `🚀 New Scalyth Waitlist Lead: ${safeName} (${safeRole}) [${trackingId}]`,
             html: `
               <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0A0A0F; color: #EDEDED; padding: 24px; border-radius: 14px;">
                 <h2 style="color: #34D399; margin: 0 0 12px;">🚀 New Scalyth Waitlist Lead</h2>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #60A5FA;">${email}</a></p>
-                <p><strong>Role:</strong> ${role}</p>
-                <p><strong>Traffic Source:</strong> ${utm_source}</p>
+                <p><strong>Name:</strong> ${safeName}</p>
+                <p><strong>Email:</strong> <a href="mailto:${safeEmail}" style="color: #60A5FA;">${safeEmail}</a></p>
+                <p><strong>Role:</strong> ${safeRole}</p>
+                <p><strong>Traffic Source:</strong> ${safeUtm}</p>
                 <p><strong>Time:</strong> ${timestamp}</p>
                 <p><strong>Tracking ID:</strong> <code>${trackingId}</code></p>
               </div>
@@ -169,7 +238,7 @@ export async function onRequestPost(context) {
       } catch (e) {}
     }
 
-    return new Response(JSON.stringify({ success: true, count: 16, name, role, trackingId }), {
+    return new Response(JSON.stringify({ success: true, count: 16, name: safeName, role: safeRole, trackingId }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {

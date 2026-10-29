@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#07070A] text-[#EDEDED] antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Notice — Scalyth</title>
+    <meta name="description" content="Privacy Notice and Data Handling practices for the Scalyth early access waitlist.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #07070A;
+            color: #EDEDED;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .ambient-glow {
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(120, 140, 255, 0.02) 40%, transparent 75%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen px-4 sm:px-6 py-12 flex flex-col items-center">
+
+    <div class="ambient-glow"></div>
+
+    <main class="relative z-10 w-full max-w-3xl space-y-10">
+        
+        <!-- Header & Navigation -->
+        <div class="flex items-center justify-between border-b border-white/[0.08] pb-6">
+            <a href="/" class="flex items-center gap-2.5 text-xs font-mono uppercase tracking-widest text-neutral-400 hover:text-white transition-colors">
+                <span class="text-sm">←</span> Return to Waitlist
+            </a>
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded bg-white text-black font-heading font-black text-[10px] flex items-center justify-center">S</div>
+                <span class="font-heading font-bold text-xs uppercase tracking-widest text-white">Scalyth</span>
+            </div>
+        </div>
+
+        <!-- Title Block -->
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-neutral-400 font-mono text-[11px] mb-4">
+                <span>DPDPA (India) Aligned</span> • Last Updated: October 2026
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-heading font-bold tracking-tight text-white mb-3">
+                Waitlist Privacy Notice
+            </h1>
+            <p class="text-sm text-neutral-400 leading-relaxed">
+                This notice describes how Scalyth ("we", "us", or "our") collects, uses, and safeguards personal data when you join our pre-launch early access waitlist at <span class="text-white font-mono">waitlist.scalyth.tech</span>.
+            </p>
+        </div>
+
+        <!-- Content Sections -->
+        <div class="space-y-8 text-neutral-300 text-sm leading-relaxed">
+            
+            <!-- Section 1 -->
+            <section class="glass-pill p-6 sm:p-8 rounded-3xl space-y-3">
+                <h2 class="text-lg font-heading font-bold text-white">1. Nature of this Website</h2>
+                <p>
+                    This website serves exclusively as a pre-launch interest registration portal (waitlist) for Scalyth. It does not provide commercial SaaS software, customer dashboards, user billing, or payment processing at this stage. No financial data, payment card details, or government identification numbers are collected or stored.
+                </p>
+            </section>
+
+            <!-- Section 2 -->
+            <section class="glass-pill p-6 sm:p-8 rounded-3xl space-y-3">
+                <h2 class="text-lg font-heading font-bold text-white">2. Personal Data We Collect</h2>
+                <p>We collect only the minimum personal data necessary to manage the early access queue:</p>
+                <ul class="list-disc pl-5 space-y-1.5 text-neutral-300">
+                    <li><strong class="text-white">Full Name or Preferred Name:</strong> To address you in transactional queue communications.</li>
+                    <li><strong class="text-white">Email Address:</strong> To deliver queue confirmation, VIP status notification, and private cohort invitation keys.</li>
+                    <li><strong class="text-white">Professional Role:</strong> (e.g., Founder, CTO, Operator) To prioritize and customize relevant product access waves.</li>
+                    <li><strong class="text-white">Attribution Data:</strong> Optional referral URL and UTM campaign parameter to measure outreach efficiency.</li>
+                </ul>
+            </section>
+
+            <!-- Section 3 -->
+            <section class="glass-pill p-6 sm:p-8 rounded-3xl space-y-3">
+                <h2 class="text-lg font-heading font-bold text-white">3. Purpose and Legal Basis (DPDPA 2023)</h2>
+                <p>
+                    In accordance with the Digital Personal Data Protection Act, 2023 (India), personal data is processed based on your voluntary consent, provided by actively entering your details and submitting the waitlist form.
+                </p>
+                <p>
+                    Your data is processed strictly for:
+                </p>
+                <ul class="list-disc pl-5 space-y-1.5 text-neutral-300">
+                    <li>Validating and maintaining your spot in the Genesis waitlist cohort.</li>
+                    <li>Sending transactional emails directly related to your queue status and access invites.</li>
+                    <li>Contacting you when your private preview access is ready for onboarding.</li>
+                </ul>
+                <p class="text-neutral-400 text-xs">
+                    We do not sell, rent, or trade your personal data with third-party data brokers or marketing networks.
+                </p>
+            </section>
+
+            <!-- Section 4 -->
+            <section class="glass-pill p-6 sm:p-8 rounded-3xl space-y-3">
+                <h2 class="text-lg font-heading font-bold text-white">4. Data Processors & Infrastructure</h2>
+                <p>To securely operate this waitlist, we rely on established infrastructure providers acting as data processors:</p>
+                <ul class="list-disc pl-5 space-y-2 text-neutral-300">
+                    <li><strong class="text-white">Cloudflare Pages & Workers:</strong> Provides edge DNS, DDoS mitigation, and serverless API execution.</li>
+                    <li><strong class="text-white">Resend, Inc.:</strong> Provides transactional email delivery infrastructure for sending welcome and queue updates.</li>
+                </ul>
+            </section>
+
+            <!-- Section 5 -->
+            <section class="glass-pill p-6 sm:p-8 rounded-3xl space-y-3">
+                <h2 class="text-lg font-heading font-bold text-white">5. Data Retention & Deletion</h2>
+                <p>
+                    We retain your waitlist information only for the duration of the pre-launch phase and subsequent rollout. You have the right at any time to request complete deletion of your records. Upon receiving an erasure request, we will remove your email and associated details from our records within 30 days.
+                </p>
+            </section>
+
+            <!-- Section 6 -->
+            <section class="glass-pill p-6 sm:p-8 rounded-3xl space-y-3">
+                <h2 class="text-lg font-heading font-bold text-white">6. Your Rights as a Data Principal</h2>
+                <p>Under applicable Indian privacy law, you are entitled to:</p>
+                <ul class="list-disc pl-5 space-y-1.5 text-neutral-300">
+                    <li><strong class="text-white">Right to Access:</strong> Request confirmation of whether your data is being processed and a summary of your data.</li>
+                    <li><strong class="text-white">Right to Correction & Erasure:</strong> Request correction of inaccurate data or deletion of your waitlist record.</li>
+                    <li><strong class="text-white">Right to Withdraw Consent:</strong> Withdraw your consent at any time without penalty.</li>
+                    <li><strong class="text-white">Right of Grievance Redressal:</strong> Have your privacy queries or grievances resolved promptly.</li>
+                </ul>
+            </section>
+
+            <!-- Section 7 -->
+            <section class="glass-pill p-6 sm:p-8 rounded-3xl space-y-3">
+                <h2 class="text-lg font-heading font-bold text-white">7. Grievance Officer & Contact Information</h2>
+                <p>
+                    For questions regarding this privacy notice, data deletion requests, or to exercise your rights under the Digital Personal Data Protection Act, please contact:
+                </p>
+                <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-4 font-mono text-xs space-y-1 text-neutral-300">
+                    <p><span class="text-neutral-500">Contact / Grievance:</span> Scalyth Privacy Team</p>
+                    <p><span class="text-neutral-500">Email:</span> <a href="mailto:info@scalyth.tech?subject=Privacy%20Grievance" class="text-white underline">info@scalyth.tech</a></p>
+                    <p><span class="text-neutral-500">Jurisdiction:</span> India</p>
+                </div>
+                <p class="text-neutral-400 text-xs">
+                    If you remain dissatisfied with our grievance redressal, you may escalate your complaint to the Data Protection Board of India in accordance with the provisions of the Digital Personal Data Protection Act, 2023.
+                </p>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="pt-8 pb-12 text-center text-xs text-neutral-600 font-mono border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span>© 2026 Scalyth. All rights reserved.</span>
+            <a href="/" class="text-neutral-500 hover:text-white transition-colors">Return to Homepage →</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>

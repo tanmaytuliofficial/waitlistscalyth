@@ -1,5 +1,8 @@
 node_modules/
 *.backup.html
 emails_dispatched.log
+waitlist_data.json
+*.log
+.env*
 .DS_Store
 Thumbs.db
